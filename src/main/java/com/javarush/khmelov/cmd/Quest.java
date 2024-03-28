@@ -26,41 +26,66 @@ public class Quest implements Command{
 
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        return Command.super.doPost(req, resp);
+        String selection = req.getParameter("responselist");
+
+        return getPage() + "?question=" + Long.parseLong(selection) ;
     }
 
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ArrayList<QuestResponse> responses = new ArrayList<>() ;
         String stringId = req.getParameter("id");
-        String stringQuestions = req.getParameter("questions");
+        String stringQuestions = req.getParameter("question");
         String stringStart = req.getParameter("start");
 
-        Optional<com.javarush.khmelov.entity.Quest> quest = questService.get(Integer.parseInt(stringId));
-        com.javarush.khmelov.entity.Quest questObject = quest.isPresent()?quest.get():
-                                                        com.javarush.khmelov.entity.Quest.builder()
-                                                                                         .name("Пустой")
-                                                                                         .description("Данный квест не заполнен!!!")
-                                                                                         .build();
-
-        Optional<Question> question = questionsRepository.get(questObject.getNextQuestionID());
-        Question questionObject = question.isPresent()? question.get():
-                                                        Question.builder()
-                                                                .name(Keys.EMPTY)
-                                                                .description("Такого вопроса не существует")
-                                                                .build();
-    if (questionObject.getRelatedObjectIDs().length!=0){
-        long[] responsesIds = questionObject.getRelatedObjectIDs();
-        for(long id:responsesIds){
-            Optional<QuestResponse> responseObject = responsesRepository.get(id);
-            responses.add(responseObject.get());
+        Long quiestionId = stringQuestions!=null?Long.parseLong(stringQuestions):0;
+        if(stringId!=null){
+            com.javarush.khmelov.entity.Quest questObject = getQuest(Long.parseLong(stringId));
+            quiestionId = questObject.getNextQuestionID();
         }
-    }
+
+        Question questionObject = getQuestion(quiestionId);
+        ArrayList<QuestResponse > responseList = getResponseList(questionObject);
 
         req.setAttribute("question", questionObject);
-        req.setAttribute("responses", responses.isEmpty()?null:responses);
+        req.setAttribute("responses", responseList.isEmpty()?null:responseList);
 
         return getJspPage();
     }
+
+
+    private com.javarush.khmelov.entity.Quest getQuest(long id){
+        Optional<com.javarush.khmelov.entity.Quest> quest = questService.get(id);
+        com.javarush.khmelov.entity.Quest questObject = quest.isPresent()?quest.get():
+                com.javarush.khmelov.entity.Quest.builder()
+                        .name("Пустой")
+                        .description("Данный квест не заполнен!!!")
+                        .build();
+        return questObject;
+    }
+    private Question getQuestion(long id){
+        Optional<Question> question = questionsRepository.get(id);
+        Question questionObject = question.isPresent()? question.get():
+                Question.builder()
+                        .name(Keys.EMPTY)
+                        .description("Такого вопроса не существует")
+                        .build();
+        return questionObject;
+    }
+
+    private ArrayList<QuestResponse> getResponseList(Question question) {
+
+        ArrayList<QuestResponse> responseList = new ArrayList<>();
+
+        if (question.getRelatedObjectIDs().length != 0) {
+            long[] responsesIds = question.getRelatedObjectIDs();
+            for (long id : responsesIds) {
+                Optional<QuestResponse> responseObject = responsesRepository.get(id);
+                responseList.add(responseObject.get());
+            }
+        }
+        return responseList;
+    }
+
 
 }
