@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class UserRepository implements Repository<User> {
 
     private final Map<Long, User> map = new HashMap<>();
-
     public static final AtomicLong id = new AtomicLong(System.currentTimeMillis());
 
     public UserRepository() {

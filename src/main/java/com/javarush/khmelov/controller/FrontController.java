@@ -14,9 +14,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.javarush.khmelov.tools.Route;
 
-
-@WebServlet({"", "/list-user", "/edit-user", "/home"})
+@WebServlet({
+        Route.EMPTY_PATH, Route.HOME,
+        Route.SIGNUP, Route.LOGIN, Route.LOGOUT,
+        Route.LIST_USER, Route.PROFILE, Route.EDIT_USER,
+        Route.ADD_QUEST, Route.QUEST,
+        Route.SELECT_QUEST,
+        Route.STATISTICS
+    })
 public class FrontController extends HttpServlet {
 
 

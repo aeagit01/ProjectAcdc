@@ -9,13 +9,14 @@ import java.util.Map;
 
 public class HttpResolver {
 
+    private final String CLASS_SUFFIX = "com.javarush.khmelov.cmd.";
     private final Map<String, Command> commandMap = new HashMap<>();
 
     @SneakyThrows
     public Command resolve(String name) {
         if (commandMap.get(name) == null) {
             String simpleName = convertSnakeStyleToCamelCase(name);
-            String className = "com.javarush.khmelov.lesson17.cmd." + simpleName;
+            String className =  CLASS_SUFFIX + simpleName;
             Class<?> aClass = Class.forName(className);
             Command command = (Command) Winter.find(aClass);
             commandMap.put(name, command);
