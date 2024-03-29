@@ -3,6 +3,7 @@ package com.javarush.khmelov.cmd;
 import com.javarush.khmelov.entity.Role;
 import com.javarush.khmelov.entity.User;
 import com.javarush.khmelov.service.UserService;
+import com.javarush.khmelov.tools.Keys;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ public class EditUser implements Command {
             Optional<User> optionalUser = userService.get(id);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
-                req.setAttribute("user", user);
+                req.setAttribute(Keys.USER, user);
             }
         }
         return getJspPage();
@@ -35,13 +36,13 @@ public class EditUser implements Command {
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = User.builder()
-                .login(req.getParameter("login"))
-                .password(req.getParameter("password"))
-                .role(Role.valueOf(req.getParameter("role")))
+                .login(req.getParameter(Keys.LOGIN))
+                .password(req.getParameter(Keys.PASSWORD))
+                .role(Role.valueOf(req.getParameter(Keys.ROLE)))
                 .build();
-        if (req.getParameter("create") != null) {
+        if (req.getParameter(Keys.CREATE) != null) {
             userService.create(user);
-        } else if (req.getParameter("update") != null) {
+        } else if (req.getParameter(Keys.UPDATE) != null) {
             user.setId(Long.parseLong(req.getParameter("id")));
             userService.update(user);
         }

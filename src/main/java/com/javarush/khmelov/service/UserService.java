@@ -31,6 +31,7 @@ public class UserService {
     }
 
     public Optional<User> get(long id) {
-        return userRepository.get(id);
+        User userPattern = User.builder().id(id).build();
+        return userRepository.find(userPattern).findFirst();
     }
 }

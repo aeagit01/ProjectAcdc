@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface Repository<T> {
 
-    Collection<User> getAll();
+    Collection<T> getAll();
 
-    Optional<T> get(long id);
+    T get(long id);
 
     void create(T entity);
 

@@ -2,6 +2,7 @@ package com.javarush.khmelov.controller;
 
 import com.javarush.khmelov.cmd.Command;
 import com.javarush.khmelov.config.Winter;
+import com.javarush.khmelov.tools.Keys;
 import lombok.SneakyThrows;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class HttpResolver {
     public Command resolve(String name) {
         if (commandMap.get(name) == null) {
             String simpleName = convertSnakeStyleToCamelCase(name);
-            String className = "com.javarush.khmelov.lesson17.cmd." + simpleName;
+            String className = Keys.CLASSPATH + simpleName;
             Class<?> aClass = Class.forName(className);
             Command command = (Command) Winter.find(aClass);
             commandMap.put(name, command);

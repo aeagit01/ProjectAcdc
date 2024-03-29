@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
-public class UserRepository implements Repository<User> {
+public class UserRepository extends QuestObjectRepository<User> {
 
     private final Map<Long, User> map = new HashMap<>();
 
@@ -21,15 +22,19 @@ public class UserRepository implements Repository<User> {
         map.put(3L, new User(3L,"Carl","admin", Role.ADMIN));
         map.put(4L, new User(4L,"Khmelov","admin", Role.ADMIN));
     }
-
+    public Stream<User> find(User pattern){
+        return map.values()
+                  .stream()
+                  .filter(u -> nullOrEquals(pattern.getId(), u.getId()));
+    };
     @Override
     public Collection<User> getAll() {
         return map.values();
     }
 
     @Override
-    public Optional<User> get(long id) {
-        return Optional.ofNullable(map.get(id));
+    public User get(long id) {
+        return map.get(id);
     }
 
     @Override

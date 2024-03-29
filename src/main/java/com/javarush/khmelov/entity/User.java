@@ -1,5 +1,6 @@
 package com.javarush.khmelov.entity;
 
+import com.javarush.khmelov.tools.Keys;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User implements QuestObject {
 
     private Long id;
 
@@ -19,8 +20,6 @@ public class User {
 
     private Role role;
 
-    public String getImage() { //TODO move to DTO
-        return "image-" + id;
-    }
+    public String getImage() { return Keys.IMAGE + "-" + id; }
 
 }
