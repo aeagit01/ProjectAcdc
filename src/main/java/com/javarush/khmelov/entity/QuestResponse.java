@@ -10,18 +10,12 @@ import java.util.Random;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class QuestResponse{
+
+public class QuestResponse extends QuestObject{
     private long id;
     private String description;
     private int [] images;
     private long [] relatedObjectIDs;
-
-    public Long getNextQuestionID(){
-        long [] questionsIDs = this.getRelatedObjectIDs();
-        return questionsIDs[(int) (new Random()).nextLong(questionsIDs.length)];
-    }
 
 //    @Override
 //    public int[] getRelatedObjectIDs() {

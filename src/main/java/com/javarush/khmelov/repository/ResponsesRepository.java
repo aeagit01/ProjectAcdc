@@ -20,7 +20,7 @@ public class ResponsesRepository implements Repository{
         map.put(2L, QuestResponse.builder()
                 .id(2L)
                 .description("Response2")
-                .relatedObjectIDs(new long[]{2L,3L})
+                .relatedObjectIDs(new long[]{1L,4L,5L})
                 .images(new int[]{}).build());
         map.put(3L, QuestResponse.builder()
                 .id(3L)
@@ -30,13 +30,24 @@ public class ResponsesRepository implements Repository{
         map.put(4L, QuestResponse.builder()
                 .id(4L)
                 .description("Response4")
-                .relatedObjectIDs(new long[]{1L,3L})
+                .relatedObjectIDs(new long[]{6L,3L})
                 .images(new int[]{}).build());
         map.put(5L, QuestResponse.builder()
                 .id(5L)
                 .description("Response5")
-                .relatedObjectIDs(new long[]{4L,2L})
+                .relatedObjectIDs(new long[]{7L,2L})
                 .images(new int[]{}).build());
+        map.put(6L, QuestResponse.builder()
+                .id(6L)
+                .description("Response5")
+                .relatedObjectIDs(new long[]{4L,1L})
+                .images(new int[]{}).build());
+        map.put(7L, QuestResponse.builder()
+                .id(7L)
+                .description("Response5")
+                .relatedObjectIDs(new long[]{6L,3L})
+                .images(new int[]{}).build());
+
     }
 
     @Override

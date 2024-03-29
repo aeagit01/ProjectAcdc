@@ -19,7 +19,6 @@ public interface Command {
     }
 
 
-
     default String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         return getPage();
     }

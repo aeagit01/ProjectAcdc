@@ -1,8 +1,12 @@
 package com.javarush.khmelov.service;
 
+import com.javarush.khmelov.entity.QuestObject;
 import com.javarush.khmelov.entity.QuestResponse;
 import com.javarush.khmelov.repository.ResponsesRepository;
+import com.javarush.khmelov.entity.Question;
+import com.javarush.khmelov.entity.Quest;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -32,6 +36,17 @@ public class ResponseService {
     public Optional<QuestResponse> get(int id) {
         return responsesRepository.get(id);
     }
+    public ArrayList<QuestResponse> getObjectResponses (QuestObject questObject){
+        ArrayList<QuestResponse> responseList = new ArrayList<>();
 
+        if (questObject.getRelatedObjectIDs().length != 0) {
+            long[] responsesIds = questObject.getRelatedObjectIDs();
+            for (long id : responsesIds) {
+                Optional<QuestResponse> responseObject = responsesRepository.get(id);
+                responseList.add(responseObject.get());
+            }
+        }
+        return responseList;
+    }
 
 }

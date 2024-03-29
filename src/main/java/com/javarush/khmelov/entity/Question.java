@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Question{
+//@NoArgsConstructor
+//@AllArgsConstructor
+public class Question extends QuestObject{
     private long id;
     private String name;
     private String description;
