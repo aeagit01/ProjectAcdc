@@ -12,10 +12,10 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question implements QuestObject{
-    private final Collection<QuestObject> responses = new ArrayList<>();
+public class QuestResponse implements QuestObject{
+    private final Collection<QuestObject> nextQuestions = new ArrayList<>();
     private final Collection<Long> images = new ArrayList<>();
-    private Long questID;
     private Long id;
     private String description;
+
 }

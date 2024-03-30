@@ -1,11 +1,8 @@
 package com.javarush.khmelov.repository;
 
 import com.javarush.khmelov.entity.QuestObject;
-import com.javarush.khmelov.entity.User;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -41,4 +38,10 @@ public abstract class QuestObjectRepository<T extends QuestObject> implements Re
     protected boolean nullOrEquals(Object patternField, Object repoField) {
         return patternField == null || patternField.equals(repoField);
     }
+
+    public T getNextQuestion(){
+        Collection<T> nextQuestions = map.values();
+        return get((new Random()).nextLong(nextQuestions.size()));
+    }
+
 }

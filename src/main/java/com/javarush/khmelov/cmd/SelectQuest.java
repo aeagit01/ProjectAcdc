@@ -1,6 +1,6 @@
 package com.javarush.khmelov.cmd;
 
-import com.javarush.khmelov.entity.QuestObject;
+import com.javarush.khmelov.entity.Quest;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ public class SelectQuest implements Command{
     }
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Collection<QuestObject> quests = questService.getAll();
+        Collection<Quest> quests = questService.getAll();
         req.setAttribute("quests", quests);
         return getJspPage();
     }
