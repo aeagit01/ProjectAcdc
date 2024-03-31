@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
         Route.EMPTY_PATH, Route.HOME,
         Route.SIGNUP, Route.LOGIN, Route.LOGOUT,
         Route.LIST_USER, Route.PROFILE, Route.EDIT_USER,
-        Route.ADD_QUEST, Route.QUEST,
+        Route.ADD_QUEST, Route.QUEST, Route.EDIT_QUEST,
         Route.SELECT_QUEST,
         Route.STATISTICS
 })

@@ -3,6 +3,7 @@ package com.javarush.khmelov.repository;
 import com.javarush.khmelov.entity.FinishMessage;
 import java.util.stream.Stream;
 import com.javarush.khmelov.entity.Question;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Random;
@@ -39,10 +40,7 @@ public class QuestionRepository extends QuestObjectRepository<Question>{
 //                question.getResponses().add((QuestResponse) map.get(8L));
 //            }
 //        });
-
-
         }
-
         @Override
         public Stream<Question> find(Question pattern) {
                 return map.values()
