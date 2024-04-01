@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
         Route.SIGNUP, Route.LOGIN, Route.LOGOUT,
         Route.LIST_USER, Route.PROFILE, Route.EDIT_USER,
         Route.ADD_QUEST, Route.QUEST, Route.EDIT_QUEST,
-        Route.SELECT_QUEST,
+        Route.SELECT_QUEST, Route.SELECT_QUESTIONS,
         Route.STATISTICS
 })
 public class FrontController extends HttpServlet {

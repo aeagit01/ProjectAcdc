@@ -7,6 +7,7 @@ public class Route {
     public static final String ADD_QUEST = "/add-quest";
     public static final String QUEST = "/quest";
     public static final String SELECT_QUEST = "/select-quest";
+    public static final String SELECT_QUESTIONS = "/select-questions";
     public static final String EDIT_QUEST = "/edit-quest";
 
     public static final String SIGNUP = "/signup";

@@ -1,6 +1,7 @@
 package com.javarush.khmelov.cmd;
 
 import com.javarush.khmelov.entity.Quest;
+import com.javarush.khmelov.entity.Question;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,4 +21,17 @@ public class SelectQuest implements Command{
         req.setAttribute("quests", quests);
         return getJspPage();
     }
+
+    @Override
+    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Question questObject;
+        String editKey = req.getParameter("edit");
+        String startKey = req.getParameter("start");
+        Long questID = editKey==null?Long.parseLong(startKey):Long.parseLong(editKey);
+
+        String selectedPage = editKey!=null ? "edit-quest?id=1&q=" + questID : "quest?id=" + questID;
+
+        return  selectedPage;
+    }
+
 }

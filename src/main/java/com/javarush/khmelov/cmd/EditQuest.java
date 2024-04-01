@@ -39,12 +39,12 @@ public class EditQuest implements Command{
         Long questionID = Long.parseLong(req.getParameter("id"));
 
         if (checkQuestion(req)) {
-            try{
-                questObject = questionService.getQuestQuestion(questID, questionID);
-                updateQuestion(req, questObject);
-            } catch (CloneNotSupportedException e) {
-                throw new RuntimeException(e);
-            }
+//            try{
+//                questObject = questionService.getQuestQuestion(questID, questionID);
+//                updateQuestion(req, questObject);
+//            } catch (CloneNotSupportedException e) {
+//                throw new RuntimeException(e);
+//            }
         }
         Boolean newQuestion = Boolean.parseBoolean(req.getParameter("newQuestion"));
         String direct = req.getParameter("direct");
@@ -85,19 +85,19 @@ public class EditQuest implements Command{
         Long questionID = Long.parseLong(req.getParameter("id"));
         Long questID = Long.parseLong(req.getParameter("q"));
         String returnPage = getJspPage();
-        try{
-            questObject = questionService.getQuestQuestion(questID,questionID);
-            req.setAttribute("question", questObject);
-            ArrayList[] responses = getResponses(questObject);
-            ArrayList[] fnmessage = getFinishMessages();
-            req.setAttribute("fnmessages", fnmessage[0]);
-            req.setAttribute("chkedresponses", responses[0]);
-            req.setAttribute("responses", responses[1]);
+//        try{
+//            questObject = questionService.getQuestQuestion(questionID);
+//            req.setAttribute("question", questObject);
+//            ArrayList[] responses = getResponses(questObject);
+//            ArrayList[] fnmessage = getFinishMessages();
+//            req.setAttribute("fnmessages", fnmessage[0]);
+//            req.setAttribute("chkedresponses", responses[0]);
+//            req.setAttribute("responses", responses[1]);
+//
+//        } catch (CloneNotSupportedException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-        ;
 //        Question questObject = checkQuestion(req);
 
 
