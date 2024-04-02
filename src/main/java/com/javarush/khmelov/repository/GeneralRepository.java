@@ -43,4 +43,8 @@ public class GeneralRepository implements Repository<QuestElement>{
     public void delete(QuestElement entity) {
         map.remove(entity.getId());
     }
+
+    public QuestElement getByQuest(Long questID){
+        return map.values().stream().filter(q->questID.equals(q.getQuestID())).findFirst().get();
+    }
 }

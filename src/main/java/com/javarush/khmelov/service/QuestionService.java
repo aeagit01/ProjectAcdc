@@ -13,44 +13,20 @@ public class QuestionService {
     public QuestionService(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
-
     public void create(Question question) {
         questionRepository.create(question);
     }
-
     public void update(Question question) {
         questionRepository.update(question);
     }
-
     public void delete(Question question) {
         questionRepository.delete(question);
     }
-
     public Collection<Question> getAll() {
         return questionRepository.getAll();
     }
-
     public Question get(long id) {
         return (Question) questionRepository.get(id);
-    }
-
-    public List<Question> getQuestQuestion(long questID){
-        Question pattern = Question.builder().questID(questID).build();
-         List<Question> currentQuestions =  questionRepository.find(pattern).toList();
-//                                             .findFirst(); //max(Comparator.comparingLong(Question::getId)
-//        if (!currentQuestion.isPresent()){
-//            pattern = Question.builder().questID(null).id(id).build();
-//            Optional<Question> templateQuestion = questionRepository.find(pattern).findFirst();
-//            currentQuestion = templateQuestion.isPresent()?
-//                              Optional.ofNullable((Question) templateQuestion.get().clone()):
-//                              currentQuestion;
-//            currentQuestion.get().setQuestID(questID);
-//            currentQuestion.get().setId(id);
-//            create(currentQuestion.get());
-//            pattern = Question.builder().questID(questID).id(id).build();
-//            currentQuestion = questionRepository.find(pattern).findFirst();
-//        }
-        return currentQuestions;
     }
 
 }

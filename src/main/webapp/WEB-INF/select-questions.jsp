@@ -10,6 +10,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
     <title>Title</title>
+    <script>
+        function openPopup(questionID) {
+                window.open("http://localhost:8080/select-response?q=1", "_blank", "width=400, height=400, alwaysRaised=yes, modal=yes");
+        }
+    </script>
+</head>
 </head>
 <body>
 <div class="container" style="height: auto">
@@ -31,7 +37,7 @@
                  name="responseslist">
                 <c:if test="${!empty chkquestions}">
                     <c:forEach var="question" items="${chkquestions}">
-                        <div style="width: 100%; border: 1px solid darkgray;" name="question"
+                        <div style="width: 90%; border: 1px solid darkgray;" name="question"
                              class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">
                             <input class="form-check-input flex-shrink-0" type="checkbox"
                                    name="responsechk"
@@ -42,6 +48,10 @@
                             <img src="/images/resp-${question.images[0]}" alt="twbs" width="90"
                                  height="90"
                                  class="rounded-circle flex-shrink-0 align-items-right justify-content-right">
+                            <div style="width: 10%">
+                                <label style="width: 3%"></label>
+                                <button type="submit" name="edit" value="${question.id}">edit</button>
+                            </div>
                         </div>
                     </c:forEach>
                 </c:if>
@@ -57,6 +67,11 @@
                         <img src="/images/resp-${question.images[0]}" alt="twbs" width="90"
                              height="90"
                              class="rounded-circle flex-shrink-0 align-items-right justify-content-right">
+                        <div style="width: 10%">
+                            <label style="width: 3%"></label>
+                            <c:set var = "qId" value="${question.id}"></c:set>
+                            <button name="edit" onclick="openPopup(qId)" value="${question.id}">edit</button>
+                        </div>
                     </div>
                 </c:forEach>
             </div>

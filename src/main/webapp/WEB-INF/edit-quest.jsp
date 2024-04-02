@@ -66,24 +66,6 @@
                                     </c:forEach>
                                 </div>
                             </td>
-<%--                            <td style="width: 40%">--%>
-<%--                                <div style="width: 100%; float: left; margin-bottom: auto; scrollbar-width: thin" class="scrollable " name="fnmessagelist">--%>
-<%--                                    <c:forEach var="fnmessage" items="${fnmessages}">--%>
-<%--                                        <div style="width: 100%;"--%>
-<%--                                             class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">--%>
-<%--                                            <input class="form-check-input flex-shrink-0" type="checkbox"--%>
-<%--                                                   name="fnmessagechk"--%>
-<%--                                                   id="questionlist${fnmessage.id}" value="${fnmessage.description}">--%>
-<%--                                            <label style="width: 3%"></label>--%>
-<%--                                            <label style="width: 80%">${fnmessage.description}</label>--%>
-<%--                                            <label style="width: 3%"></label>--%>
-<%--                                            <img src="/images/resp-${fnmessage.image}" alt="twbs" width="90"--%>
-<%--                                                 height="90"--%>
-<%--                                                 class="rounded-circle">--%>
-<%--                                        </div>--%>
-<%--                                    </c:forEach>--%>
-<%--                                </div>--%>
-<%--                            </td>--%>
                         </tr>
                 </tbody>
             </table>

@@ -17,16 +17,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@WebServlet({Route.SELECT_RESPONSE, Route.SELECT_NEXT_QUESTIONS})
+public class PopUpController extends HttpServlet {
 
-@WebServlet({
-        Route.EMPTY_PATH, Route.HOME,
-        Route.SIGNUP, Route.LOGIN, Route.LOGOUT,
-        Route.LIST_USER, Route.PROFILE, Route.EDIT_USER,
-        Route.ADD_QUEST, Route.QUEST, Route.EDIT_QUEST,
-        Route.SELECT_QUEST, Route.SELECT_QUESTIONS,
-        Route.STATISTICS
-})
-public class FrontController extends HttpServlet {
 
     private HttpResolver httpResolver;
 
@@ -44,10 +37,6 @@ public class FrontController extends HttpServlet {
         if (matcher.find()) {
             cmdName = matcher.group();
         }
-//        String uriCommand = RequestHelper.getCommand(req);
-//        String cmdName = uriCommand.equals("/")
-//                ? "home"
-//                : uriCommand.substring(1);
 
         Command command = httpResolver.resolve(cmdName);
         if (req.getMethod().equalsIgnoreCase(Keys.POST)) { //"post"
@@ -61,6 +50,4 @@ public class FrontController extends HttpServlet {
             throw new UnsupportedOperationException(req.getMethod());
         }
     }
-
 }
-

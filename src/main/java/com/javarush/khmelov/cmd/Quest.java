@@ -39,30 +39,10 @@ public class Quest implements Command{
         String questID = req.getParameter("questID");
         String returnPage = getJspPage();
 
-
         Question questObject = questionService.get(Long.parseLong(stringID));
         req.setAttribute("question", questObject);
-        req.setAttribute("responses", questObject.getResponses().isEmpty() ? null : questObject.getResponses());
+//        req.setAttribute("responses", questObject.getResponses().isEmpty() ? null : questObject.getResponses());
 
-
-//        Question questionObject = getQuestion(quiestionId);
-//
-//        ArrayList<QuestResponse > responseList = responseService.getObjectResponses(questionObject); //getResponseList(questionObject)
-//
-//        if (responseList.size() < 2) {
-//            Optional<FinishMessage> finishMessageOptional = finishMessageService.get(quiestionId);
-//            FinishMessage finishMessageObject = finishMessageOptional.isPresent()? finishMessageOptional.get():
-//                    FinishMessage.builder()
-//                            .name("До свиданья")
-//                            .description("Вы закончили")
-//                            .build();
-//            req.setAttribute("question", questionObject);
-//            returnPage = "WEB-INF/finish-quest.jsp";
-//        }else {
-//
-//            req.setAttribute("question", questionObject);
-//            req.setAttribute("responses", responseList.isEmpty() ? null : responseList);
-//        }
         return returnPage;
     }
 

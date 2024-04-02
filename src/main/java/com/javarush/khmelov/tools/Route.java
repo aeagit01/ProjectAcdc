@@ -16,6 +16,7 @@ public class Route {
     public static final String PROFILE = "/profile";
     public static final String LIST_USER = "/list-user";
     public static final String EDIT_USER = "/edit-user";
-
+    public static final String SELECT_RESPONSE = "/select-response";
+    public static final String SELECT_NEXT_QUESTIONS = "/select-nextquestions";
     public static final String STATISTICS = "/statistics";
 }

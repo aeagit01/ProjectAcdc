@@ -13,9 +13,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestResponse implements QuestObject{
-    private final Collection<QuestObject> nextQuestions = new ArrayList<>();
-    private final Collection<Long> images = new ArrayList<>();
     private Long id;
     private String description;
-
+    private final Collection<Long> images = new ArrayList<>();
 }

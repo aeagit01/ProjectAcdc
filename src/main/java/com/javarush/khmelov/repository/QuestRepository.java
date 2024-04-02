@@ -17,7 +17,6 @@ public class QuestRepository extends QuestObjectRepository<Quest>{
                 .stream()
                 .filter(u -> nullOrEquals(pattern.getId(), u.getId()))
                 .filter(u -> nullOrEquals(pattern.getDescription(), u.getDescription()))
-                .filter(u -> nullOrEquals(pattern.getName(), u.getName()))
-                .filter(u -> nullOrEquals(pattern.getImages(), u.getImages()));
+                .filter(u -> nullOrEquals(pattern.getName(), u.getName()));
     }
 }

@@ -68,10 +68,10 @@ public class EditQuest implements Command{
     }
     private void updateRelatadObj(HttpServletRequest req, Question question) {
         String[] selectedResponse = req.getParameterValues("responsechk");
-        question.getResponses().clear();
-        for (String ResponseID : selectedResponse){
-            question.getResponses().add(questResponsesService.get(Long.parseLong(ResponseID)));
-        }
+//        question.getResponses().clear();
+//        for (String ResponseID : selectedResponse){
+//            question.getResponses().add(questResponsesService.get(Long.parseLong(ResponseID)));
+//        }
     }
 //    private void updateImages(HttpServletRequest req, Question question) {
 //        String[] selectedResponse = req.getParameterValues("images");
@@ -112,25 +112,15 @@ public class EditQuest implements Command{
         ArrayList<QuestObject> allFinishMessages = new ArrayList<QuestObject>(finishMessageService.getAll());
         return new ArrayList[] {allFinishMessages};
     }
-    private ArrayList[] getResponses(Question question){
-
-        ArrayList<QuestObject> checkedResponse = (ArrayList<QuestObject>) question.getResponses();
-        ArrayList<QuestObject> allResponses = new ArrayList<QuestObject>(questResponsesService.getAll());
-        for(QuestObject response: checkedResponse){
-            allResponses.remove(response);
-        }
-
-        return new ArrayList[]{checkedResponse, allResponses};
-    }
 
     private Question setQuestion(HttpServletRequest req, Long questionID){
         Question question = Question.builder()
-                .questID(Long.parseLong(req.getParameter("q")))
+//                .questID(Long.parseLong(req.getParameter("q")))
                 .description(req.getParameter("description"))
                 .id(Long.parseLong(req.getParameter("id"))).build();
-        Collection<QuestObject> responses = question.getResponses();
-        responses.forEach(response ->{
-        } );
+//        Collection<QuestObject> responses = question.getResponses();
+//        responses.forEach(response ->{
+//        } );
         questionRepository.create(question);
         String description = req.getParameter("question");
         question.setDescription(req.getParameter("question"));

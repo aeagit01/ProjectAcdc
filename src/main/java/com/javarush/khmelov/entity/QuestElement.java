@@ -16,7 +16,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class QuestElement  {
     private Long id;
+    private Boolean end;
     private Long questID;
-    private final Map<Question, ArrayList<QuestResponse>> responseLink = new HashMap<>();
-    private final Map<QuestResponse, ArrayList<QuestObject>> nextQuestionLink = new HashMap<>();
+    private Long questionID;
+    private Long responseID;
+    private Long nextQuestionID;
 }
