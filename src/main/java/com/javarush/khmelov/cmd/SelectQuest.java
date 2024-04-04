@@ -25,11 +25,16 @@ public class SelectQuest implements Command{
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Question questObject;
+        String routeLink = "select-quest";
+        Long questID = 1L;
+
         String editKey = req.getParameter("edit");
         String startKey = req.getParameter("start");
-        Long questID = editKey==null?Long.parseLong(startKey):Long.parseLong(editKey);
+        questID = editKey==null?Long.parseLong(startKey):questID;
+        questID = startKey==null?Long.parseLong(editKey):questID;
+        routeLink = editKey!=null?"edit-quest":"quest";
 
-        String selectedPage = editKey!=null ? "edit-quest?id=1&q=" + questID : "quest?id=" + questID;
+        String selectedPage = "%s?id=".formatted(routeLink) + questID;
 
         return  selectedPage;
     }

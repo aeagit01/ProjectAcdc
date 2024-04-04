@@ -33,7 +33,7 @@ public class SelectNextquestions implements Command{
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Long questId = Long.parseLong(req.getParameter("q"));
+        Long questId = Long.parseLong(req.getParameter("id"));
         selectedResponse = questResponsesService.get(questId);
         req.setAttribute("response", selectedResponse);
 
@@ -48,7 +48,7 @@ public class SelectNextquestions implements Command{
 
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long questId = Long.parseLong(req.getParameter("q"));
+        Long questId = Long.parseLong(req.getParameter("id"));
 
         String direction = req.getParameter("direct");
 
@@ -58,7 +58,7 @@ public class SelectNextquestions implements Command{
             step = step>1?step - 1:step;
         }
 
-        return getPage()+"?q="+questId;
+        return getPage()+"?id="+questId;
     }
 
 

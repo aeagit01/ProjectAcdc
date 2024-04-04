@@ -25,14 +25,11 @@
                     <div style="width: 70%">
                             ${quest.description}
                         <label style="width: 3%"></label>
-                                <button type="submit" name="edit" value="${quest.id}">edit</button>
-                                <button type="submit" name="start" value="${quest.id}">start</button>
+                        <button type="submit" name="edit" value="${quest.id}">edit</button>
+                        <button type="submit" name="start" value="${quest.id}">start</button>
                     </div>
                 </label>
             </div>
-                <%--        <p>--%>
-                <%--            <a href="quest?id=${quest.id}">${quest.name} " | " ${quest.description} </a>--%>
-                <%--        </p>--%>
             </c:forEach>
         </div>
 </form>

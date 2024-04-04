@@ -19,7 +19,7 @@ public class SelectResponse implements Command{
     GeneralService generalService;
     QuestResponsesService questResponsesService;
     FinishMessageService finishMessageService;
-    Integer step = 0;
+    Integer responseId = 0;
     Question selectedQuestion;
 
     public SelectResponse(QuestionService questionService, QuestService questService, GeneralService generalService,
@@ -35,7 +35,7 @@ public class SelectResponse implements Command{
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Long questId = Long.parseLong(req.getParameter("q"));
+        Long questId = Long.parseLong(req.getParameter("id"));
         selectedQuestion = questionService.get(questId);
         req.setAttribute("question", selectedQuestion);
 
@@ -54,16 +54,16 @@ public class SelectResponse implements Command{
 
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long questId = Long.parseLong(req.getParameter("q"));
+        Long questId = Long.parseLong(req.getParameter("id"));
 
         String direction = req.getParameter("direct");
 
         if(direction.equals("next")){
         }
         if(direction.equals("prev")){
-            step = step>1?step - 1:step;
+            responseId = responseId>1?responseId - 1:responseId;
         }
 
-        return getPage()+"?q="+questId;
+        return getPage()+"?q="+questId + "&r=" + responseId;
     }
 }

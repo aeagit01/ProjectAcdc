@@ -37,10 +37,10 @@
                  name="responseslist">
                 <c:if test="${!empty chkquestions}">
                     <c:forEach var="question" items="${chkquestions}">
-                        <div style="width: 90%; border: 1px solid darkgray;" name="question"
+                        <div style="width: 100%; border: 1px solid darkgray;" name="question"
                              class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">
                             <input class="form-check-input flex-shrink-0" type="checkbox"
-                                   name="responsechk"
+                                   name="questionchk"
                                    id="questionlist${question.id}" value="${question.id}" checked><br>
                             <label style="width: 3%"></label>
                             <label style="width: 80%">${question.description}</label>
@@ -56,7 +56,7 @@
                     </c:forEach>
                 </c:if>
                 <c:forEach var="question" items="${questions}">
-                    <div style="width: 100%; border: 1px solid darkgray;" name="response"
+                    <div style="width: 100%; border: 1px solid darkgray;" name="question"
                          class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">
                         <input class="form-check-input flex-shrink-0" type="checkbox"
                                name="questionchk"
@@ -79,8 +79,8 @@
 <%--              <label style="width: 3%"></label>--%>
             </div>
             <div class="col-md-3 text-end d-flex gp-2">
-                <button class="btn btn-outline-primary me-2" name="direct" value="prev" type="submit">Назад</button>
-                <button class="btn btn-outline-primary me-2" name="direct" value="next" type="submit">Далее</button>
+                <button class="btn btn-outline-primary me-2" name="direct" value="exit" type="submit">Завершить</button>
+<%--                <button class="btn btn-outline-primary me-2" name="direct" value="next" type="submit">Далее</button>--%>
             </div>
         </div>
     </form>

@@ -1,7 +1,12 @@
 package com.javarush.khmelov.tools;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("unused")
 public class Keys {
+
+
     public static final String WEBINF = "WEB-INF";
     public static final String IMAGE = "image";
 
@@ -24,6 +29,15 @@ public class Keys {
     public static final String USERS = "users";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
+
+
+    public static final String COMMAND_EDIT = "edit";
+    public static final String COMMAND_EXIT = "exit";
+    public static final String COMMAND_SELECT_NEXT = "selectnext";
+    public static final String COMMAND_SELECT_RESPONSE = "selectresponse";
+
+
+    public static final String COMMAND_SELECT_QUESTION = "selectquestion";
 
 
     public static final String CLASSPATH = "com.javarush.khmelov.cmd.";

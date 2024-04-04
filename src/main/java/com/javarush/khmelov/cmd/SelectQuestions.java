@@ -7,18 +7,18 @@ import com.javarush.khmelov.service.GeneralService;
 import com.javarush.khmelov.service.QuestResponsesService;
 import com.javarush.khmelov.service.QuestService;
 import com.javarush.khmelov.service.QuestionService;
-import com.javarush.khmelov.tools.Keys;
+import com.javarush.khmelov.tools.Route;
+import com.javarush.khmelov.tools.Tools;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class SelectQuestions implements Command{
+public class SelectQuestions implements Command {
     QuestionService questionService;
     QuestService questService;
     GeneralService generalService;
@@ -31,18 +31,24 @@ public class SelectQuestions implements Command{
         this.questService = questService;
         this.generalService = generalService;
     }
+
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long questId = Long.parseLong(req.getParameter("q"));
+        Long questId = Long.parseLong(req.getParameter("id"));
+        ArrayList<Question> chkquest = new ArrayList<>();
         selectedQuest = questService.get(questId);
 
-//        List<Question> chkquestion = questionService.getQuestQuestion(questId);
-//        Collection<Question> allQuestions = questionService.getAll();
-//        for (com.javarush.khmelov.entity.Question question:chkquestion){
-//            allQuestions.remove(chkquestion);
-//        }
-//        req.setAttribute("chkquestions", chkquestion.toArray());
-//        req.setAttribute("questions", allQuestions.toArray());
+        QuestElement pattern = QuestElement.builder().questID(questId).build();
+        ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
+        Collection<Question> allQuestions = new ArrayList<>(questionService.getAll());
+        for (QuestElement questElement:questElementList){
+            Question foundQuestion = questionService.get(questElement.getQuestionID());
+            allQuestions.remove(foundQuestion);
+            chkquest.add(foundQuestion);
+        }
+
+        req.setAttribute("chkquestions", chkquest);
+        req.setAttribute("questions", allQuestions.toArray());
         req.setAttribute("quest", selectedQuest);
 
         return getJspPage(); //getPage()+"?q="+questId;//
@@ -50,40 +56,52 @@ public class SelectQuestions implements Command{
 
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long questId = Long.parseLong(req.getParameter("q"));
-        String urlPath = getPage();
-        String editKey = req.getParameter("edit");
+        Long questId = Long.parseLong(req.getParameter("id"));
+        String commandName;
+//        String urlPath = getPage();
 
-        String direction = req.getParameter("direct");
-
-        if(direction!=null && direction.equals("next")){
-            step = step + 1;
-//            QuestElement questElement = getQuestElement(req,questId);
-//            if (questElement == null){
-//                generalService.create(QuestElement.builder().questID(questId).build());
-//                questElement = getQuestElement(req,questId);
-//            }
-//            UpdateQuestElement(req, questElement);
-        }
-        if(direction!=null && direction.equals("prev")){
-            step = step>1?step - 1:step;
+        String cmd = getCommandName(req, Route.SELECT_QUESTIONS);
+        if (cmd!=Route.SELECT_QUESTIONS){
+            updateQuestElements(req);
+            commandName = Route.EDIT_QUEST;
+        }else {
+            commandName = req.getParameter("edit");
         }
 
-        return urlPath +"?q="+questId;
+        return commandName + "?id=" + questId;
     }
+    private void updateQuestElements(HttpServletRequest req){
+        Long questId = Long.parseLong(req.getParameter("id"));
+        QuestElement pattern = QuestElement.builder().questID(questId).build();
+        ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
+        String[] checkedQuestions = req.getParameterValues("questionchk");
+        if (checkedQuestions!=null) {
+            List<String> selectedQuestions = Arrays.asList(checkedQuestions);
+            List<String> tmpCheck = new ArrayList<String>(selectedQuestions);
 
-    public void UpdateQuestElement(HttpServletRequest req, QuestElement questElement){
-//        String description = req.getParameter("description");
-//        String[] selectedQuestion = req.getParameterValues("questionchk");
-//        updateQuestionList(questElement, selectedQuestion);
-//        String[] selectedResponse = req.getParameterValues("responsechk");
-//        Long questionID = Long.parseLong(req.getParameter("questionID"));
-//        updateResponseListElement(questElement, selectedResponse, questionID);
-//        String[] selectedNextQuestion = req.getParameterValues("nextQuestioncnk");
-//        String[] selectedFinishMessage = req.getParameterValues("finishMessagecnk");
-//        Long resposeID = Long.parseLong(req.getParameter("resonseID"));
-//        updateNextQuestionListElement(questElement, selectedResponse, resposeID);
+            for (QuestElement questElement : questElementList) {
+                String checked = questElement.getQuestionID().toString();
+                if (selectedQuestions.indexOf(checked) == -1) {
+                    generalService.delete(questElement);
+                } else {
+                    tmpCheck.remove(checked);
+                }
+            }
+            for (String newQuestion : tmpCheck) {
+                generalService.create(QuestElement.builder()
+                        .questID(questId)
+                        .questionID(Long.parseLong(newQuestion)).build());
+            }
+        }
     }
-
+    private String getCommandName(HttpServletRequest req, String currentCommand) {
+        Tools tools = new Tools();
+        String commandName = currentCommand;
+        Optional<String> cmd = Optional.ofNullable(req.getParameter("direct"));
+        if (cmd.isPresent()) {
+            commandName = tools.getCommandKeys(cmd.get());
+        }
+        return commandName;
+    }
 
 }
