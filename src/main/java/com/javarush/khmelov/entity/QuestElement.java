@@ -16,7 +16,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class QuestElement  {
     private Long id;
-    private Boolean end;
+    private Long position = 0L; //0-not checked, 1-first, 2-last
     private Long questID;
     private Long questionID;
     private Long responseID;

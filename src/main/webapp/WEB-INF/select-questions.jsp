@@ -12,7 +12,7 @@
     <title>Title</title>
     <script>
         function openPopup(questionID) {
-                window.open("http://localhost:8080/select-response?q=1", "_blank", "width=400, height=400, alwaysRaised=yes, modal=yes");
+            window.open("http://localhost:8080/select-response?q=1", "_blank", "width=400, height=400, alwaysRaised=yes, modal=yes");
         }
     </script>
 </head>
@@ -35,6 +35,20 @@
             </div>
             <div style="width: 100%; height: 60%; float: left; border: 1px solid darkgray;overflow: auto;"
                  name="responseslist">
+                <c:if test="${!empty firstchk}">
+                    <div style="width: 100%; border: 1px solid darkgray;" name="response"
+                         class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">
+                        <input class="form-check-input flex-shrink-0" type="checkbox"
+                               name="responsechk"
+                               id="questionlist${firstchk.id}" value="${firstchk.id}" checked><br>
+                        <label style="width: 3%"></label>
+                        <label style="width: 80%">${firstchk.description}</label>
+                        <label style="width: 3%"></label>
+                        <img src="/images/resp-${firstchk.images[0]}" alt="twbs" width="90"
+                             height="90"
+                             class="rounded-circle flex-shrink-0 align-items-right justify-content-right">
+                    </div>
+                </c:if>
                 <c:if test="${!empty chkquestions}">
                     <c:forEach var="question" items="${chkquestions}">
                         <div style="width: 100%; border: 1px solid darkgray;" name="question"
@@ -44,6 +58,9 @@
                                    id="questionlist${question.id}" value="${question.id}" checked><br>
                             <label style="width: 3%"></label>
                             <label style="width: 80%">${question.description}</label>
+                            <input class="form-check-input flex-shrink-0" type="checkbox"
+                                   name="firstchk"
+                                   id="questionlist${question.id}" value="${question.id}"><br>
                             <label style="width: 3%"></label>
                             <img src="/images/resp-${question.images[0]}" alt="twbs" width="90"
                                  height="90"
@@ -63,24 +80,27 @@
                                id="questionlist${question.id}" value="${question.id}"><br>
                         <label style="width: 80%;"
                                class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">${question.description}</label>
+                        <input class="form-check-input flex-shrink-0" type="checkbox"
+                               name="firstchk"
+                               id="questionlist${question.id}" value="${question.id}"><br>
                         <label style="width: 3%"></label>
                         <img src="/images/resp-${question.images[0]}" alt="twbs" width="90"
                              height="90"
                              class="rounded-circle flex-shrink-0 align-items-right justify-content-right">
                         <div style="width: 10%">
                             <label style="width: 3%"></label>
-                            <c:set var = "qId" value="${question.id}"></c:set>
+                            <c:set var="qId" value="${question.id}"></c:set>
                             <button name="edit" onclick="openPopup(qId)" value="${question.id}">edit</button>
                         </div>
                     </div>
                 </c:forEach>
             </div>
             <div>
-<%--              <label style="width: 3%"></label>--%>
+                <%--              <label style="width: 3%"></label>--%>
             </div>
             <div class="col-md-3 text-end d-flex gp-2">
                 <button class="btn btn-outline-primary me-2" name="direct" value="exit" type="submit">Завершить</button>
-<%--                <button class="btn btn-outline-primary me-2" name="direct" value="next" type="submit">Далее</button>--%>
+                <%--                <button class="btn btn-outline-primary me-2" name="direct" value="next" type="submit">Далее</button>--%>
             </div>
         </div>
     </form>

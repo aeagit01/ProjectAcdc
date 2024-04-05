@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Optional;
@@ -56,7 +57,6 @@ public class EditQuest implements Command {
 
         return returnPage;
     }
-
     private String getCommandName(HttpServletRequest req, String currentCommand) {
         Tools tools = new Tools();
         String commandName = currentCommand;
@@ -67,4 +67,9 @@ public class EditQuest implements Command {
         return commandName;
     }
 
+    private String getFirstElement(ArrayList arrayList){
+
+
+        return null;
+    }
 }

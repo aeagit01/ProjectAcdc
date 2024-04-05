@@ -15,8 +15,6 @@ public class Keys {
     public static final String GET = "get";
     public static final String CREATE = "create";
     public static final String UPDATE = "update";
-    public static final String NEXT = "next";
-    public static final String PREV = "prev";
     public static final String OK = "ok";
     public static final String CANCEL = "cancel";
     public static final String QUESTION = "quiestion";
@@ -33,12 +31,13 @@ public class Keys {
 
     public static final String COMMAND_EDIT = "edit";
     public static final String COMMAND_EXIT = "exit";
-    public static final String COMMAND_SELECT_NEXT = "selectnext";
     public static final String COMMAND_SELECT_RESPONSE = "selectresponse";
-
-
+    public static final String COMMAND_NEXT = "next";
+    public static final String COMMAND_PREV = "prev";
     public static final String COMMAND_SELECT_QUESTION = "selectquestion";
 
+
+    public static final String COMMAND_SELECT_NEXT = "selectnext";
 
     public static final String CLASSPATH = "com.javarush.khmelov.cmd.";
 

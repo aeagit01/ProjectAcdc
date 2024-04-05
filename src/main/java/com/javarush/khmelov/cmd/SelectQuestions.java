@@ -36,17 +36,23 @@ public class SelectQuestions implements Command {
     public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long questId = Long.parseLong(req.getParameter("id"));
         ArrayList<Question> chkquest = new ArrayList<>();
+        Question firstchk = null;
         selectedQuest = questService.get(questId);
 
         QuestElement pattern = QuestElement.builder().questID(questId).build();
         ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
         Collection<Question> allQuestions = new ArrayList<>(questionService.getAll());
-        for (QuestElement questElement:questElementList){
+        for (QuestElement questElement : questElementList) {
             Question foundQuestion = questionService.get(questElement.getQuestionID());
             allQuestions.remove(foundQuestion);
             chkquest.add(foundQuestion);
+            if (questElement.getPosition()!=null && questElement.getPosition()==1L){
+                firstchk = foundQuestion;
+                chkquest.remove(foundQuestion);
+            }
         }
 
+        req.setAttribute("firstchk", firstchk);
         req.setAttribute("chkquestions", chkquest);
         req.setAttribute("questions", allQuestions.toArray());
         req.setAttribute("quest", selectedQuest);
@@ -61,21 +67,22 @@ public class SelectQuestions implements Command {
 //        String urlPath = getPage();
 
         String cmd = getCommandName(req, Route.SELECT_QUESTIONS);
-        if (cmd!=Route.SELECT_QUESTIONS){
+        if (cmd != Route.SELECT_QUESTIONS) {
             updateQuestElements(req);
             commandName = Route.EDIT_QUEST;
-        }else {
+        } else {
             commandName = req.getParameter("edit");
         }
 
         return commandName + "?id=" + questId;
     }
-    private void updateQuestElements(HttpServletRequest req){
+
+    private void updateQuestElements(HttpServletRequest req) {
         Long questId = Long.parseLong(req.getParameter("id"));
         QuestElement pattern = QuestElement.builder().questID(questId).build();
         ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
         String[] checkedQuestions = req.getParameterValues("questionchk");
-        if (checkedQuestions!=null) {
+        if (checkedQuestions != null) {
             List<String> selectedQuestions = Arrays.asList(checkedQuestions);
             List<String> tmpCheck = new ArrayList<String>(selectedQuestions);
 
@@ -92,8 +99,10 @@ public class SelectQuestions implements Command {
                         .questID(questId)
                         .questionID(Long.parseLong(newQuestion)).build());
             }
+            updateFirstElement(req);
         }
     }
+
     private String getCommandName(HttpServletRequest req, String currentCommand) {
         Tools tools = new Tools();
         String commandName = currentCommand;
@@ -104,4 +113,24 @@ public class SelectQuestions implements Command {
         return commandName;
     }
 
+    private void updateFirstElement(HttpServletRequest req) {
+        Long firstElements = Long.parseLong(req.getParameter("firstchk"));
+        Long questId = Long.parseLong(req.getParameter("id"));
+
+        if (firstElements != null) {
+            QuestElement pattern = QuestElement.builder().questID(questId).position(1L).build();
+            ArrayList<QuestElement> firstElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
+            for (QuestElement firstElenemt: firstElementList){
+                Long cheked = firstElenemt.getQuestionID();
+                if (firstElements != cheked){
+                    firstElenemt.setPosition(0L);
+                    generalService.update(firstElenemt);
+                }
+            }
+            pattern = QuestElement.builder().questID(questId).questionID(firstElements).build();
+            QuestElement newFirstElement = generalService.find(pattern).findFirst().get();
+            newFirstElement.setPosition(1L);
+            generalService.update(newFirstElement);
+        }
+    }
 }

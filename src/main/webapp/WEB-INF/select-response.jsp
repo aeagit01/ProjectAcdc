@@ -28,7 +28,23 @@
             </div>
             <div>
                 <div style="width: 100%; height: 60%; float: left; border: 1px solid darkgray;overflow: auto;"
-                     name="responseslist">
+                     name="chkresponses">
+                    <c:if test="${!empty responsechk}">
+                        <c:forEach var="response" items="${responsechk}">
+                            <div style="width: 100%; border: 1px solid darkgray;" name="response"
+                                 class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">
+                                <input class="form-check-input flex-shrink-0" type="checkbox"
+                                       name="responsechk"
+                                       id="questionlist${response.id}" value="${response.id}" checked><br>
+                                <label style="width: 3%"></label>
+                                <label style="width: 80%">${response.description}</label>
+                                <label style="width: 3%"></label>
+                                <img src="/images/resp-${response.images[0]}" alt="twbs" width="90"
+                                     height="90"
+                                     class="rounded-circle flex-shrink-0 align-items-right justify-content-right">
+                            </div>
+                        </c:forEach>
+                    </c:if>
                     <c:if test="${!empty responses}">
                         <c:forEach var="response" items="${responses}">
                             <div style="width: 100%; border: 1px solid darkgray;" name="response"
@@ -45,7 +61,6 @@
                             </div>
                         </c:forEach>
                     </c:if>
-
                 </div>
             </div>
             <div class="col-md-3 text-end d-flex gp-2">

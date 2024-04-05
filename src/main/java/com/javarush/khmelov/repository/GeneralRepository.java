@@ -25,7 +25,7 @@ public class GeneralRepository implements Repository<QuestElement>{
         return map.values()
                 .stream()
                 .filter(u->nullOrEquals(pattern.getId(),u.getId()))
-                .filter(u->nullOrEquals(pattern.getEnd(), u.getEnd()))
+                .filter(u->nullOrEquals(pattern.getPosition(), u.getPosition()))
                 .filter(u->nullOrEquals(pattern.getQuestID(),u.getQuestID()))
                 .filter(u->nullOrEquals(pattern.getQuestionID(),u.getQuestionID()))
                 .filter(u->nullOrEquals(pattern.getNextQuestionID(),u.getNextQuestionID()))
