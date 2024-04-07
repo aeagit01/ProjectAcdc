@@ -7,19 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User implements QuestObject {
 
     private Long id;
-
     private String login;
-
     private String password;
-
     private Role role;
 
-    public String getImage() { return Keys.IMAGE + "-" + id; }
+    public String getImage() {
+        return Keys.IMAGE + "-" + id;
+    }
 
 }

@@ -18,7 +18,7 @@ public class ListUser implements Command {
     }
 
     @Override
-    public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public String doGet(HttpServletRequest req, HttpServletResponse res) {
         Collection<User> users = userService.getAll();
         req.setAttribute(Keys.USERS, users);
         return getJspPage();

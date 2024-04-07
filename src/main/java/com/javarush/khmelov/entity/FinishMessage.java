@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class FinishMessage implements QuestObject {
     private Long id;
     private String description;
-    private String image;
+    private String[] images;
 
 }

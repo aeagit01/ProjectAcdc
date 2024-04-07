@@ -26,14 +26,14 @@ public class Question implements Command{
 
 
     @Override
-    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public String doPost(HttpServletRequest req, HttpServletResponse res) {
         String selection = req.getParameter("responselist");
         String returnString = "";
 
         return getPage() + "?question=" + Long.parseLong(selection) ;
     }
 
-    public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public String doGet(HttpServletRequest req, HttpServletResponse res) {
         ArrayList<QuestObject> responses = new ArrayList<>() ;
 
         String stringId = req.getParameter("id");

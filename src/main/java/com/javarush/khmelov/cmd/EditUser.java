@@ -20,7 +20,7 @@ public class EditUser implements Command {
     }
 
     @Override
-    public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public String doGet(HttpServletRequest req, HttpServletResponse res) {
         String stringId = req.getParameter("id");
         if (stringId != null) {
             long id = Long.parseLong(stringId);
@@ -34,7 +34,7 @@ public class EditUser implements Command {
     }
 
     @Override
-    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public String doPost(HttpServletRequest req, HttpServletResponse res) {
         User user = User.builder()
                 .login(req.getParameter(Keys.LOGIN))
                 .password(req.getParameter(Keys.PASSWORD))

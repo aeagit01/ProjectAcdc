@@ -54,7 +54,7 @@ public class FrontController extends HttpServlet {
             String redirect = command.doPost(req, resp);
             resp.sendRedirect(redirect);
         } else if (req.getMethod().equalsIgnoreCase(Keys.GET)) { //"get"
-            String view = command.doGet(req, resp);
+            String view = command.doGet(req,resp);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(view);
             requestDispatcher.forward(req, resp);
         } else {

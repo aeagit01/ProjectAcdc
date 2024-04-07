@@ -5,6 +5,7 @@ import com.javarush.khmelov.service.UserService;
 import com.javarush.khmelov.tools.Keys;
 import com.javarush.khmelov.tools.Route;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Optional;
@@ -19,14 +20,14 @@ public class Login implements Command {
     }
 
     @Override
-    public String doPost(HttpServletRequest request) {
-        String login = request.getParameter(Keys.LOGIN);
-        String password = request.getParameter(Keys.PASSWORD);
+    public String doPost(HttpServletRequest req, HttpServletResponse res) {
+        String login = req.getParameter(Keys.LOGIN);
+        String password = req.getParameter(Keys.PASSWORD);
         Optional<User> user = userService.get(login, password);
         if (user.isPresent()) {
-            HttpSession session = request.getSession();
+            HttpSession session = req.getSession();
             session.setAttribute(Keys.USER, user.get());
-            return Route.PROFILE;
+            return Route.SELECT_QUEST;
         } else {
             return Route.LOGIN; //todo add error message
         }

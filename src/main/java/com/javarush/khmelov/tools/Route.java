@@ -19,4 +19,7 @@ public class Route {
     public static final String SELECT_RESPONSE = "/select-response";
     public static final String SELECT_NEXT_QUESTIONS = "/select-nextquestions";
     public static final String STATISTICS = "/statistics";
+
+
+    public static final String DATA_PATH = "data";
 }

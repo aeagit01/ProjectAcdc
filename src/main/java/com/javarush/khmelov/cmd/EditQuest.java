@@ -37,7 +37,7 @@ public class EditQuest implements Command {
     }
 
     @Override
-    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public String doPost(HttpServletRequest req, HttpServletResponse res){
 
         String commandKey;
         Long questID = Long.parseLong(req.getParameter("id"));
@@ -50,7 +50,7 @@ public class EditQuest implements Command {
         return commandKey + "?id=" + questID + suffix;
     }
 
-    public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public String doGet(HttpServletRequest req, HttpServletResponse res) {
         Question questObject;
         Long questionID = Long.parseLong(req.getParameter("id"));
         String returnPage = getJspPage();

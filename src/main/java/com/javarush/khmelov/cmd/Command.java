@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface Command {
-    default String doGet(HttpServletRequest req) {
+    default String doGet(HttpServletRequest req, HttpServletResponse res) {
         return getJspPage();
     }
-    default String doPost(HttpServletRequest req) throws ServletException, IOException {
+    default String doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         return getPage();
     }
 //    default String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,4 +43,5 @@ public interface Command {
                 ? snakeName.substring(1)
                 : snakeName;
     }
+
 }

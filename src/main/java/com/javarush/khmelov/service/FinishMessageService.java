@@ -2,16 +2,29 @@ package com.javarush.khmelov.service;
 
 import com.javarush.khmelov.entity.FinishMessage;
 import com.javarush.khmelov.entity.QuestResponse;
+import com.javarush.khmelov.entity.Question;
+import com.javarush.khmelov.exeption.QuestException;
 import com.javarush.khmelov.repository.QuestResponsesRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
+
 import com.javarush.khmelov.repository.FinishMessageRepository;
+import com.javarush.khmelov.tools.Route;
+
+import static com.javarush.khmelov.tools.Keys.*;
 
 public class FinishMessageService {
     private final FinishMessageRepository finishMessageRepository;
 
     public FinishMessageService(FinishMessageRepository finishMessageRepository) {
         this.finishMessageRepository = finishMessageRepository;
+        loadSavedData();
     }
 
     public void create(FinishMessage response) {
@@ -32,5 +45,22 @@ public class FinishMessageService {
 
     public FinishMessage get(long id) {
         return (FinishMessage) finishMessageRepository.get(id);
+    }
+    private void loadSavedData(){
+        Path dataPath = WEB_INF.resolve(Route.DATA_PATH+FINISH_FILE);
+        try (Stream<String> questData = Files.lines(Paths.get(dataPath.toUri()))) {
+            List<String> list = questData.toList();
+            for (String questElement : list) {
+                finishMessageRepository.create(
+                        FinishMessage.builder()
+                                .description(questElement)
+                                .build());
+            };
+
+//            log.info("Load question data");
+        } catch (IOException e){
+//            log.error("Question data load error");
+            throw new QuestException(e);
+        }
     }
 }

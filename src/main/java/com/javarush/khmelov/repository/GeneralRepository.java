@@ -28,8 +28,7 @@ public class GeneralRepository implements Repository<QuestElement>{
                 .filter(u->nullOrEquals(pattern.getPosition(), u.getPosition()))
                 .filter(u->nullOrEquals(pattern.getQuestID(),u.getQuestID()))
                 .filter(u->nullOrEquals(pattern.getQuestionID(),u.getQuestionID()))
-                .filter(u->nullOrEquals(pattern.getNextQuestionID(),u.getNextQuestionID()))
-                ;
+                .filter(u->nullOrEquals(pattern.getNextQuestionID(),u.getNextQuestionID()));
     }
     @Override
     public QuestElement get(long id) {

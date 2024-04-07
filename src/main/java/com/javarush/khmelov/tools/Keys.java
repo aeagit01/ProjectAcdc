@@ -1,11 +1,33 @@
 package com.javarush.khmelov.tools;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.javarush.khmelov.entity.QuestElement;
 
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
+import static java.nio.charset.StandardCharsets.*;
 @SuppressWarnings("unused")
 public class Keys {
 
+    public static final Path WEB_INF = Paths.get(
+                                URI.create(
+                                Objects.requireNonNull(QuestElement.class
+                                                       .getResource("/")
+                                ).toString()))
+                                 .getParent();
+
+    public static final String QUESTS_FILE = "/quest.txt";
+    public static final String QUESTIONS_FILE = "/questions.txt";
+    public static final String RESPONSES_FILE = "/responses.txt";
+    public static final String FINISH_FILE = "/finish.txt";
+    public static final String QUESTS_DATA_FILE = "/questdata.txt";
+
+    public static final Charset CODE_UTF8 = UTF_8;
+    public static final Long ELEMENT_FIRST = 1L;
+    public static final Long ELEMENT_LAST = 2L;
+    public static final Long ELEMENT_ORDINARY = 0L;
 
     public static final String WEBINF = "WEB-INF";
     public static final String IMAGE = "image";
@@ -19,7 +41,7 @@ public class Keys {
     public static final String CANCEL = "cancel";
     public static final String QUESTION = "quiestion";
     public static final String RESPONSE = "response";
-    public static final String EMPTYSTR = "Пустой";
+    public static final String EMPTYSTR = "";
 
     public static final String ROLES = "roles";
     public static final String ROLE = "role";
@@ -39,6 +61,18 @@ public class Keys {
 
     public static final String COMMAND_SELECT_NEXT = "selectnext";
 
+
+    public static final String PARAMETR_ID = "id";
+    public static final String PARAMETR_FINISH = "f";
+    public static final String PARAMETR_QUESTION = "q";
+    public static final String PARAMETR_RESPONSE = "r";
+
+    public static final String JSP_VAL_CHECKFLAG = "questionchk";
+    public static final String JSP_VAL_DIRECT = "direct";
+    public static final String JSP_VAL_FIRSTELEMENT = "firstchk";
+    public static final String JSP_VAL_CHECKEDQUESTION = "chkquestions";
+    public static final String JSP_VAL_QUESTION = "questions";
+    public static final String JSP_VAL_QUEST = "quest";
     public static final String CLASSPATH = "com.javarush.khmelov.cmd.";
 
 

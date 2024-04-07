@@ -40,10 +40,10 @@ public class PopUpController extends HttpServlet {
 
         Command command = httpResolver.resolve(cmdName);
         if (req.getMethod().equalsIgnoreCase(Keys.POST)) { //"post"
-            String redirect = command.doPost(req, resp);
+            String redirect = command.doPost(req,resp);
             resp.sendRedirect(redirect);
         } else if (req.getMethod().equalsIgnoreCase(Keys.GET)) { //"get"
-            String view = command.doGet(req, resp);
+            String view = command.doGet(req,resp);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(view);
             requestDispatcher.forward(req, resp);
         } else {
