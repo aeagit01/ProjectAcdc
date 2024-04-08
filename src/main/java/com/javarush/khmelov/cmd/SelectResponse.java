@@ -6,19 +6,17 @@ import com.javarush.khmelov.entity.Quest;
 import com.javarush.khmelov.entity.Question;
 import com.javarush.khmelov.service.*;
 import com.javarush.khmelov.tools.Keys;
+import com.javarush.khmelov.tools.Route;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //todo add selection from list question of quest
-public class SelectResponse implements Command{
+public class SelectResponse implements Command {
 
     QuestionService questionService;
     QuestService questService;
@@ -50,14 +48,13 @@ public class SelectResponse implements Command{
         QuestElement pattern = QuestElement.builder().questionID(questionId).questID(questId).build();
         ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
         Collection<QuestResponse> allResponses = new ArrayList<>(questResponsesService.getAll());
-        for (QuestElement questElement:questElementList){
-            if (questElement.getResponseID()!=null) {
+        for (QuestElement questElement : questElementList) {
+            if (questElement.getResponseID() != null) {
                 QuestResponse foundResponse = questResponsesService.get(questElement.getResponseID());
                 allResponses.remove(foundResponse);
                 chkresponses.add(foundResponse);
             }
         }
-
         req.setAttribute("responsechk", chkresponses);
         req.setAttribute("responses", allResponses);
 
@@ -66,33 +63,39 @@ public class SelectResponse implements Command{
 
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res) {
-        Long questId = Long.parseLong(req.getParameter("id"));
-
+        QuestElement nextQuestElement = null;
+        String nextPage = getPage();
+        String questId = req.getParameter("id");
+        String questionId = req.getParameter("q");
         String direction = req.getParameter("direct");
 
-        if(direction.equals("next")){
-            questionId = questionId + 1;
+        if (direction.equals("next")) {
+            nextQuestElement = generalService.getNextQuestElement(Long.parseLong(questionId), Long.parseLong(questId));
+            questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
+            nextPage = nextQuestElement == null ? Route.EDIT_QUEST : nextPage;
         }
-        if(direction.equals("prev")){
-            questionId = questionId>1?questionId - 1:questionId;
+        if (direction.equals("prev")) {
+            nextQuestElement = generalService.getPrevQuestElement(Long.parseLong(questionId), Long.parseLong(questId));
+            questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
+            nextPage = nextQuestElement == null ? Route.EDIT_QUEST : nextPage;
         }
         updateResponsesElenments(req);
-
-        return getPage()+"?id="+questId + "&q=" + questionId;
+        return nextPage + "?id=" + questId + "&q=" + questionId;
     }
-    private void updateResponsesElenments(HttpServletRequest req){
+
+    private void updateResponsesElenments(HttpServletRequest req) {
         String questId = req.getParameter("id");
         String questionId = req.getParameter("q");
         QuestElement pattern = QuestElement.builder().questionID(Long.parseLong(questionId)).questID(Long.parseLong(questId)).build();
         ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
 
         String[] checkedResponses = req.getParameterValues("responsechk");
-        if (checkedResponses!=null) {
+        if (checkedResponses != null) {
             List<String> selectedResponses = Arrays.asList(checkedResponses);
             List<String> tmpCheck = new ArrayList<String>(selectedResponses);
 
             for (QuestElement questElement : questElementList) {
-                String checked = questElement.getResponseID()!=null?questElement.getResponseID().toString(): Keys.EMPTYSTR;
+                String checked = questElement.getResponseID() != null ? questElement.getResponseID().toString() : Keys.EMPTYSTR;
                 if (selectedResponses.indexOf(checked) == -1) {
                     generalService.delete(questElement);
                 } else {
