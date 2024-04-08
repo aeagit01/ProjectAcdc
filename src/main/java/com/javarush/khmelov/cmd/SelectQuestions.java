@@ -20,8 +20,8 @@ public class SelectQuestions implements Command {
     QuestionService questionService;
     QuestService questService;
     GeneralService generalService;
-    QuestResponsesService questResponsesService;
     Integer step = 0;
+
     Quest selectedQuest;
 
     public SelectQuestions(QuestionService questionService, QuestService questService, GeneralService generalService) {
@@ -29,16 +29,14 @@ public class SelectQuestions implements Command {
         this.questService = questService;
         this.generalService = generalService;
     }
-
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse res) {
-        Long questId = Long.parseLong(req.getParameter("id"));
+        Long questId = Long.parseLong(req.getParameter(Keys.PARAMETR_ID)); //"id"
         ArrayList<Question> chkquest = new ArrayList<>();
         Question firstchk = null;
         selectedQuest = questService.get(questId);
 
-        QuestElement pattern = QuestElement.builder().questID(questId).build();
-        ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).distinct().collect(Collectors.toList());
+        List<QuestElement> questElementList = generalService.findQuestQuestions(questId);
         Collection<Question> allQuestions = new ArrayList<>(questionService.getAll());
         for (QuestElement questElement : questElementList) {
             Question foundQuestion = questionService.get(questElement.getQuestionID());
@@ -49,7 +47,6 @@ public class SelectQuestions implements Command {
                 chkquest.remove(foundQuestion);
             }
         }
-
         req.setAttribute(Keys.JSP_VAL_FIRSTELEMENT, firstchk);
         req.setAttribute("chkquestions", chkquest);
         req.setAttribute("questions", allQuestions.toArray());
@@ -57,12 +54,10 @@ public class SelectQuestions implements Command {
 
         return getJspPage(); //getPage()+"?q="+questId;//
     }
-
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res){
         Long questId = Long.parseLong(req.getParameter(Keys.PARAMETR_ID));
         String commandName;
-//        String urlPath = getPage();
 
         String cmd = getCommandName(req, Route.SELECT_QUESTIONS);
         if (cmd != Route.SELECT_QUESTIONS) {
@@ -71,10 +66,8 @@ public class SelectQuestions implements Command {
         } else {
             commandName = req.getParameter(Keys.COMMAND_EDIT);
         }
-
-        return commandName + "?id=" + questId;
+        return commandName + "?%s=%s".formatted(Keys.PARAMETR_ID,questId);
     }
-
     private void updateQuestElements(HttpServletRequest req) {
         Long questId = Long.parseLong(req.getParameter(Keys.PARAMETR_ID));
         QuestElement pattern = QuestElement.builder().questID(questId).build();

@@ -49,7 +49,7 @@ public class Quest implements Command {
             questElement = generalService.find(pattern).findFirst();
         }
 
-        if (questElement!=null && questElement.isPresent()) {
+        if (questElement != null && questElement.isPresent()) {
             question = questionService.get(questElement.get().getQuestionID());
 
             pattern = QuestElement.builder()
@@ -63,11 +63,11 @@ public class Quest implements Command {
             question = Question.builder().description(Messages.NO_FIRST_QUESTION).build();
         }
 
-        req.setAttribute("question",
+        req.setAttribute(Keys.QUESTION, //"question"
                 finishParametr != null ? finishMessageService.get(Long.parseLong(finishParametr)) :
                         question);
-        req.setAttribute("responses", responses);
-//        req.setAttribute("responses", questObject.getResponses().isEmpty() ? null : questObject.getResponses());
+        req.setAttribute(Keys.JSP_VAL_RESPONSES, responses); //"responses"
+        req.setAttribute(Keys.JSP_VAL_BUTTONNAME, finishParametr != null ? Keys.BN_FINISH : Keys.BN_RESPONSE);
 
         return returnPage + "?id=%s&%s=%s".formatted(stringID,
                 finishParametr != null ? Keys.PARAMETR_FINISH : Keys.PARAMETR_QUESTION,
@@ -76,26 +76,31 @@ public class Quest implements Command {
 
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res) {
-        String selection = req.getParameter("responselist");
+        String selection = req.getParameter(Keys.JSP_VAL_RESPONSELIST); //"responselist"
         String stringId = req.getParameter(Keys.PARAMETR_ID);
         String questionId = req.getParameter(Keys.PARAMETR_QUESTION);
         String nextParametr = Keys.PARAMETR_QUESTION;
+        String suffix = Keys.EMPTYSTR;
+        String commandKey = getPage();
         Long nextQuestion = 0L;
 
-        QuestElement pattern = QuestElement.builder()
-                .questID(Long.parseLong(stringId))
-                .questionID(Long.parseLong(questionId))
-                .responseID(Long.parseLong(selection)).build();
-        Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
-        if (questElement.isPresent()) {
-            nextParametr = getNextObjectParametr(questElement.get());
-            nextQuestion = questElement.get().getNextQuestionID();
-        } else {
-
+        if (selection != null) {
+            QuestElement pattern = QuestElement.builder()
+                                                .questID(Long.parseLong(stringId))
+                                                .questionID(Long.parseLong(questionId))
+                                                .responseID(Long.parseLong(selection)).build();
+            Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
+            if (questElement.isPresent()) {
+                nextParametr = getNextObjectParametr(questElement.get());
+                nextQuestion = questElement.get().getNextQuestionID();
+                suffix = "&%s=%d".formatted(nextParametr, nextQuestion);
+            }
+        }else{
+            commandKey = Keys.COMMAND_SELECTQUEST;
         }
 
         String questID = req.getParameter(Keys.PARAMETR_ID);
-        return getPage() + "?id=%d&%s=%d".formatted(Long.parseLong(questID), nextParametr, nextQuestion);
+        return  commandKey + "?%s=%s".formatted(Keys.PARAMETR_ID,questID) + suffix;
     }
 
     private String getNextObjectParametr(QuestElement questElement) {

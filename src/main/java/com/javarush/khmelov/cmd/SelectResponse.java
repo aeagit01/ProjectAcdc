@@ -23,7 +23,7 @@ public class SelectResponse implements Command {
     GeneralService generalService;
     QuestResponsesService questResponsesService;
     FinishMessageService finishMessageService;
-    Integer questionId = 1;
+    Integer questionId;
     Question selectedQuestion;
 
     public SelectResponse(QuestionService questionService, QuestService questService, GeneralService generalService,
@@ -35,15 +35,15 @@ public class SelectResponse implements Command {
         this.finishMessageService = finishMessageService;
 
     }
-
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse res) {
+
         ArrayList<QuestResponse> chkresponses = new ArrayList<>();
-        Long questId = Long.parseLong(req.getParameter("id"));
-        Long questionId = Long.parseLong(req.getParameter("q"));
+        Long questId = Long.parseLong(req.getParameter(Keys.PARAMETR_ID));
+        Long questionId = Long.parseLong(req.getParameter(Keys.PARAMETR_QUESTION));
 
         selectedQuestion = questionService.get(questionId);
-        req.setAttribute("question", selectedQuestion);
+        req.setAttribute(Keys.QUESTION, selectedQuestion);
 
         QuestElement pattern = QuestElement.builder().questionID(questionId).questID(questId).build();
         ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
@@ -55,48 +55,54 @@ public class SelectResponse implements Command {
                 chkresponses.add(foundResponse);
             }
         }
-        req.setAttribute("responsechk", chkresponses);
-        req.setAttribute("responses", allResponses);
+        req.setAttribute(Keys.JSP_VAL_RESPONSECHK, chkresponses);
+        req.setAttribute(Keys.JSP_VAL_RESPONSES, allResponses);
 
-        return getJspPage(); //getPage()+"?q="+questId;//
+        return getJspPage();
     }
-
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res) {
         QuestElement nextQuestElement = null;
         String nextPage = getPage();
-        String questId = req.getParameter("id");
-        String questionId = req.getParameter("q");
-        String direction = req.getParameter("direct");
+        String questId = req.getParameter(Keys.PARAMETR_ID);
+        String questionId = req.getParameter(Keys.PARAMETR_QUESTION);
+        String direction = req.getParameter(Keys.JSP_VAL_DIRECT);
 
-        if (direction.equals("next")) {
+        if (direction.equals(Keys.COMMAND_NEXT)) {
             nextQuestElement = generalService.getNextQuestElement(Long.parseLong(questionId), Long.parseLong(questId));
             questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
-            nextPage = nextQuestElement == null ? Route.EDIT_QUEST : nextPage;
+//            nextPage = nextQuestElement == null ? Route.EDIT_QUEST : nextPage;
         }
-        if (direction.equals("prev")) {
+        if (direction.equals(Keys.COMMAND_PREV)) {
             nextQuestElement = generalService.getPrevQuestElement(Long.parseLong(questionId), Long.parseLong(questId));
             questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
-            nextPage = nextQuestElement == null ? Route.EDIT_QUEST : nextPage;
         }
         updateResponsesElenments(req);
-        return nextPage + "?id=" + questId + "&q=" + questionId;
-    }
 
+        String suffix = "&%s=%s".formatted(Keys.PARAMETR_QUESTION, questionId);
+
+        if (nextQuestElement == null) {
+            nextPage = Route.EDIT_QUEST;
+            suffix = "";
+        }
+
+        return nextPage + "?%s=%s".formatted(Keys.PARAMETR_ID, questId) + suffix;
+    }
     private void updateResponsesElenments(HttpServletRequest req) {
-        String questId = req.getParameter("id");
-        String questionId = req.getParameter("q");
+
+        String questId = req.getParameter(Keys.PARAMETR_ID);
+        String questionId = req.getParameter(Keys.PARAMETR_QUESTION);
         QuestElement pattern = QuestElement.builder().questionID(Long.parseLong(questionId)).questID(Long.parseLong(questId)).build();
         ArrayList<QuestElement> questElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
 
-        String[] checkedResponses = req.getParameterValues("responsechk");
+        String[] checkedResponses = req.getParameterValues(Keys.JSP_VAL_RESPONSECHK);
         if (checkedResponses != null) {
             List<String> selectedResponses = Arrays.asList(checkedResponses);
             List<String> tmpCheck = new ArrayList<String>(selectedResponses);
 
             for (QuestElement questElement : questElementList) {
                 String checked = questElement.getResponseID() != null ? questElement.getResponseID().toString() : Keys.EMPTYSTR;
-                if (selectedResponses.indexOf(checked) == -1) {
+                if (selectedResponses.indexOf(checked) == Keys.OUT_OF_INDEX) {
                     generalService.delete(questElement);
                 } else {
                     tmpCheck.remove(checked);

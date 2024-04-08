@@ -60,7 +60,7 @@
 
             <div class="col-md-3 text-end">
                 <label class="list-group-item d-flex gap-2">
-                    <button class="btn btn-outline-primary me-2" name="OK" type="submit">Ответить</button>
+                    <button class="btn btn-outline-primary me-2" name="OK" type="submit">${buttonname}</button>
                 </label>
             </div>
 
