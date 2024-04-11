@@ -1,19 +1,14 @@
 package com.javarush.khmelov.cmd;
 
 import com.javarush.khmelov.entity.Quest;
-import com.javarush.khmelov.entity.QuestElement;
 import com.javarush.khmelov.entity.Question;
 import com.javarush.khmelov.service.GeneralService;
 import com.javarush.khmelov.tools.Keys;
-import com.javarush.khmelov.tools.Route;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.javarush.khmelov.service.QuestService;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Optional;
 
 public class SelectQuest implements Command{
     private final QuestService questService;

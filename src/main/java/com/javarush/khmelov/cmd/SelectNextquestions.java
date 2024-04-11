@@ -1,8 +1,6 @@
 package com.javarush.khmelov.cmd;
 
-import com.javarush.khmelov.entity.FinishMessage;
-import com.javarush.khmelov.entity.QuestElement;
-import com.javarush.khmelov.entity.QuestResponse;
+import com.javarush.khmelov.entity.*;
 import com.javarush.khmelov.entity.Question;
 import com.javarush.khmelov.service.*;
 import com.javarush.khmelov.tools.Keys;
@@ -46,19 +44,31 @@ public class SelectNextquestions implements Command {
         Question selectedQuestion = questionService.get(questionId);
         req.setAttribute(Keys.QUESTION, selectedQuestion);
 
-        req.setAttribute("chkq", getCheckedQuestion(questId, questionId, responseId));
+        Question chkq = getCheckedQuestion(questId, questionId, responseId);
+        req.setAttribute("chkq", chkq);
         selectedResponse = questResponsesService.get(responseId);
+
         req.setAttribute(Keys.RESPONSE, selectedResponse);
-
         Collection<com.javarush.khmelov.entity.Question> questionlist = questionService.getAll();
-        req.setAttribute(Keys.JSP_VAL_QUESTION, questionlist.toArray());
+        Collection<Question> tmpList = questionlist;
+        if(chkq!=null){
+            tmpList.remove(chkq);
+        }
 
-        req.setAttribute("chkfin", getCheckedFinishMessage(questId, questionId, responseId));
+        req.setAttribute(Keys.JSP_VAL_QUESTION, tmpList.toArray());
+        FinishMessage chkfin = getCheckedFinishMessage(questId, questionId, responseId);
+        req.setAttribute("chkfin", chkfin);
         Collection<FinishMessage> finmessagelist = finishMessageService.getAll();
-        req.setAttribute("finmessages", finmessagelist.toArray());
+        Collection<FinishMessage> tmpFinMessageList = finmessagelist;
+        if(chkfin!=null){
+            tmpFinMessageList.remove(chkfin);
+        }
+
+        req.setAttribute("finmessages", tmpFinMessageList.toArray());
 
         return getJspPage(); //getPage()+"?q="+questId;//
     }
+
 
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
