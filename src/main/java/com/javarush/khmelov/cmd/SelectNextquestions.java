@@ -129,7 +129,11 @@ public class SelectNextquestions implements Command {
 
     private Question getCheckedQuestion(Long questId, Long questionID, Long responseId){
         Question question = null;
-        QuestElement pattern = QuestElement.builder().questID(questId).questionID(questionID).responseID(responseId).build();
+        QuestElement pattern = QuestElement.builder()
+                .questID(questId)
+                .questionID(questionID)
+                .responseID(responseId).build();
+
         Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
         if(questElement.isPresent()){
             question = questionService.get(questElement.get().getNextQuestionID());
@@ -139,7 +143,11 @@ public class SelectNextquestions implements Command {
 
     private FinishMessage getCheckedFinishMessage(Long questId, Long questionID, Long responseId){
         FinishMessage finishMessage = null;
-        QuestElement pattern = QuestElement.builder().questID(questId).questionID(questionID).responseID(responseId).build();
+        QuestElement pattern = QuestElement.builder()
+                .questID(questId)
+                .questionID(questionID)
+                .responseID(responseId).build();
+
         Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
         if(questElement.isPresent()){
             finishMessage = finishMessageService.get(questElement.get().getNextQuestionID());
