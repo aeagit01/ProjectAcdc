@@ -4,6 +4,7 @@ import com.javarush.khmelov.entity.QuestElement;
 import com.javarush.khmelov.entity.Question;
 import com.javarush.khmelov.exeption.QuestException;
 import com.javarush.khmelov.repository.QuestionRepository;
+import com.javarush.khmelov.tools.Keys;
 import com.javarush.khmelov.tools.Route;
 import lombok.extern.log4j.Log4j2;
 
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 
 import static com.javarush.khmelov.tools.Keys.*;
 
-//@Log4j2
+@Log4j2
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
@@ -40,6 +41,9 @@ public class QuestionService {
     public Question get(long id) {
         return (Question) questionRepository.get(id);
     }
+
+
+
     private void loadSavedQuestion(){
         Path dataPath = WEB_INF.resolve(Route.DATA_PATH+QUESTIONS_FILE);
         try (Stream<String> questData = Files.lines(Paths.get(dataPath.toUri()))) {
@@ -52,9 +56,9 @@ public class QuestionService {
                                 .build());
             };
 
-//            log.info("Load question data");
+            log.info("Load question data");
         } catch (IOException e){
-//            log.error("Question data load error");
+            log.error("Question data load error");
             throw new QuestException(e);
         }
     }

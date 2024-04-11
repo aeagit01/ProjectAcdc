@@ -15,23 +15,20 @@
 <div class="container">
     <form method="post" class="block">
         <div class="col-md-30 text-end">
+            <c:forEach var="helpline" items="${helplines}">
             <div class="col-md-25 text-end">
+
                 <label class="list-group-item d-flex gap-2 align-items-center justify-content-left" style="width: 100%">
-                    <div style="width: 70%" class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left" >
-                        ${question.description}
-                    </div>
-                    <div style="width: 30%"  >
-                        <img src="/images/pic-${question.images[0]}" alt="twbs" width="100" height="100" class="rounded-circle flex-shrink-0 align-items-left">
-                    </div>
+                    ${helpline}
                 </label>
+
             </div>
+            </c:forEach>
             <div class="col-md-3 text-end">
                 <label class="list-group-item d-flex gap-2">
-                    <button class="btn btn-outline-primary me-2" name="OK" type="submit" >ОК</button>
+                    <button class="btn btn-outline-primary me-2" name="OK" type="submit">ОК</button>
                 </label>
             </div>
-
-
         </div>
     </form>
 </div>

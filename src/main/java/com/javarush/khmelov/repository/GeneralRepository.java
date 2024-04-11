@@ -17,7 +17,7 @@ public class GeneralRepository implements Repository<QuestElement>{
 
     @Override
     public Collection<QuestElement> getAll() {
-        return null;
+        return map.values();
     }
 
     @Override
@@ -28,6 +28,7 @@ public class GeneralRepository implements Repository<QuestElement>{
                 .filter(u->nullOrEquals(pattern.getPosition(), u.getPosition()))
                 .filter(u->nullOrEquals(pattern.getQuestID(),u.getQuestID()))
                 .filter(u->nullOrEquals(pattern.getQuestionID(),u.getQuestionID()))
+                .filter(u->nullOrEquals(pattern.getResponseID(),u.getResponseID()))
                 .filter(u->nullOrEquals(pattern.getNextQuestionID(),u.getNextQuestionID()));
     }
     @Override

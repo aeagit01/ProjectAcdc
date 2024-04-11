@@ -49,14 +49,16 @@ class EditQuestTest extends BaseIT{
     }
     @Test
     void whenEditNextQuestionButtonPressed_thenReturnSelectNextQuestionPage() {
+
         Mockito.when(request.getParameter(Keys.PARAMETR_ID)).thenReturn("1");
         Mockito.when(request.getParameter(Keys.JSP_VAL_DIRECT)).thenReturn(Keys.COMMAND_SELECT_NEXT);
         Mockito.when(request.getParameter(Route.EDIT_QUEST)).thenReturn(Route.EDIT_QUEST);
         String actualUri = editQuest.doPost(request, response);
-        String expectedUri = "%s?%s=%d&%s=%s".formatted(Route.SELECT_NEXT_QUESTIONS,
+        String expectedUri = "%s?%s=%d&%s=%s&%s=%d".formatted(Route.SELECT_NEXT_QUESTIONS,
                 Keys.PARAMETR_ID, 1,
                 Keys.PARAMETR_RESPONSE,
-                "3");
+                "3",
+                Keys.PARAMETR_QUESTION,2);
         Assertions.assertEquals(expectedUri, actualUri);
     }
     @Test

@@ -23,6 +23,8 @@ public class Keys {
     public static final String RESPONSES_FILE = "/responses.txt";
     public static final String FINISH_FILE = "/finish.txt";
     public static final String QUESTS_DATA_FILE = "/questdata.txt";
+    public static final String HELP_FILE = "/help.txt";
+
 
     public static final Charset CODE_UTF8 = UTF_8;
     public static final Long ELEMENT_FIRST = 1L;
@@ -71,6 +73,7 @@ public class Keys {
     public static final String JSP_VAL_CHECKFLAG = "questionchk";
     public static final String JSP_VAL_DIRECT = "direct";
     public static final String JSP_VAL_FIRSTELEMENT = "firstchk";
+    public static final String JSP_VAL_CHECKEDFINISHMESSAGE = "finmessagechk";
     public static final String JSP_VAL_CHECKEDQUESTION = "chkquestions";
     public static final String JSP_VAL_RESPONSECHK = "responsechk";
     public static final String JSP_VAL_RESPONSELIST = "responselist";
@@ -78,6 +81,12 @@ public class Keys {
     public static final String JSP_VAL_QUESTION = "questions";
     public static final String JSP_VAL_QUEST = "quest";
     public static final String JSP_VAL_BUTTONNAME = "buttonname";
+    public static final String JSP_VAL_QUESTIMAGE = "buttonname";
+    public static final String JSP_VAL_RESPONSEIMAGE = "responseimage";
+    public static final String JSP_VAL_QUESTIONIMAGE = "questionimage";
+
+    public static final String NOIMAGE = "noimage.png";
+
     public static final String BN_RESPONSE = "Ответить";
     public static final String BN_FINISH = "Завершить";
 

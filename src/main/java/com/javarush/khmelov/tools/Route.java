@@ -3,7 +3,7 @@ package com.javarush.khmelov.tools;
 public class Route {
     public static final String EMPTY_PATH = "";
     public static final String HOME = "/home";
-
+    public static final String HELP = "/help";
     public static final String ADD_QUEST = "/add-quest";
     public static final String QUEST = "/quest";
     public static final String SELECT_QUEST = "/select-quest";

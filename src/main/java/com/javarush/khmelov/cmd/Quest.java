@@ -79,7 +79,6 @@ public class Quest implements Command {
         String selection = req.getParameter(Keys.JSP_VAL_RESPONSELIST); //"responselist"
         String stringId = req.getParameter(Keys.PARAMETR_ID);
         String questionId = req.getParameter(Keys.PARAMETR_QUESTION);
-        String nextParametr = Keys.PARAMETR_QUESTION;
         String suffix = Keys.EMPTYSTR;
         String commandKey = getPage();
         Long nextQuestion = 0L;

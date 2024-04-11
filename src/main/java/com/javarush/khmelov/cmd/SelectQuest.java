@@ -5,6 +5,7 @@ import com.javarush.khmelov.entity.QuestElement;
 import com.javarush.khmelov.entity.Question;
 import com.javarush.khmelov.service.GeneralService;
 import com.javarush.khmelov.tools.Keys;
+import com.javarush.khmelov.tools.Route;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,32 +32,34 @@ public class SelectQuest implements Command{
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res){
         Question questObject;
-        String routeLink = "select-quest";
+        String suffix = Keys.EMPTYSTR;
+        String commandLink = Keys.COMMAND_SELECTQUEST;
         String questID = "1";
 
-        String editKey = req.getParameter("edit");
-        String startKey = req.getParameter("start");
-        questID = editKey==null?startKey:questID;
-        questID = startKey==null?editKey:questID;
-        routeLink = editKey!=null?"edit-quest":"quest";
-        String suffix = routeLink==Keys.JSP_VAL_QUEST
-                        ?"&q=%s".formatted(getFirstQuestion(questID).toString()):"";
+        String editKey = req.getParameter(Keys.COMMAND_EDIT);
+        String startKey = req.getParameter(Keys.COMMAND_START);
 
-        String selectedPage = "%s?id=%s".formatted(routeLink,questID) + suffix;
+        if (startKey!=null){
+            questID = startKey;
+            commandLink = Keys.JSP_VAL_QUEST;
+            suffix = "&q=%s".formatted(generalService.getFirstQuestElement(Long.parseLong(questID)).toString());
+        }
+        if (editKey!=null){
+            suffix = "";
+            questID = editKey;
+            commandLink = Keys.COMMAND_EDIT + "-" + Keys.JSP_VAL_QUEST; //"edit-quest"
+        }
+
+//        questID = editKey==null?startKey:questID;
+//        questID = startKey==null?editKey:questID;
+//        routeLink = editKey!=null?"edit-quest":"quest";
+//        String suffix = routeLink==Keys.JSP_VAL_QUEST
+//                        ?"&q=%s".formatted(generalService.getFirstQuestElement(Long.parseLong(questID)).toString()):"";
+
+        String selectedPage = "%s?id=%s".formatted(commandLink,questID) + suffix;
 
         return  selectedPage;
     }
 
-    private Long getFirstQuestion(String questID){
 
-        Long firstQuestionId = 0L;
-        QuestElement pattern = QuestElement.builder()
-                                .questID(Long.parseLong(questID))
-                                .position(Keys.ELEMENT_FIRST).build();
-        Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
-        if (questElement.isPresent()){
-            firstQuestionId = questElement.get().getQuestionID();
-        }
-        return firstQuestionId;
-    }
 }

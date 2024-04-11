@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
         Route.LIST_USER, Route.PROFILE, Route.EDIT_USER,
         Route.ADD_QUEST, Route.QUEST, Route.EDIT_QUEST,
         Route.SELECT_QUEST, Route.SELECT_QUESTIONS,
-        Route.STATISTICS
+        Route.STATISTICS, Route.HELP
 })
 public class FrontController extends HttpServlet {
 

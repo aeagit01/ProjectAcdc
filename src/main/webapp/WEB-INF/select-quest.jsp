@@ -23,9 +23,9 @@
                     </div>
                 </div>
                 <div class="card">
-                    <button class="btn btn-primary" type="submit" name="edit" value="${quest.id}">edit</button>
+                    <button class="btn btn-primary" type="submit" name="edit" value="${quest.id}">Изменить</button>
                     <label style="height: 7px;width: 10%"> </label>
-                    <button class="btn btn-primary" type="submit" name="start" value="${quest.id}">start</button>
+                    <button class="btn btn-primary" type="submit" name="start" value="${quest.id}">Начать</button>
                 </div>
             </label>
          </div>

@@ -6,62 +6,93 @@ import com.javarush.khmelov.exeption.QuestException;
 import com.javarush.khmelov.repository.GeneralRepository;
 import com.javarush.khmelov.tools.Keys;
 import com.javarush.khmelov.tools.Route;
-import lombok.extern.flogger.Flogger;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Logger;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 import static com.javarush.khmelov.tools.Keys.*;
-
-
+@Log4j2
 public class GeneralService {
     private GeneralRepository generalRepository;
-//    public static final Logger logger = LogManager.getLogger(GeneralService.class);
+//public static final Logger logger = (Logger) LogManager.getLogger(GeneralService.class);
     public GeneralService(GeneralRepository generalRepository) {
         this.generalRepository = generalRepository;
         loadSavedQuestData();
     }
-
     public void create(QuestElement questElement) {
         generalRepository.create(questElement);
     }
-
     public void update(QuestElement questElement) {
         generalRepository.update(questElement);
     }
-
     public void delete(QuestElement questElement) {
         generalRepository.delete(questElement);
     }
-
     public Collection<QuestElement> getAll() {
         return generalRepository.getAll();
     }
-
     public QuestElement get(long id) {
         return (QuestElement) generalRepository.get(id);
     }
-
     public QuestElement getByQuest(Long questID) {
         return (QuestElement) generalRepository.getByQuest(questID);
     }
-
     public Stream<QuestElement> find(QuestElement pattern) {
         return generalRepository.find(pattern);
     }
+    public List<QuestElement> sortedFind(QuestElement pattern, Comparator comparator){
+        Stream<QuestElement> questElementStream = find(pattern).sorted(comparator);
+        return questElementStream.collect(Collectors.toList());
+    }
+    public List<QuestElement> findQuestQuestions(Long questId){
+        QuestElement pattern = QuestElement.builder().questID(questId).build();
+        return find(pattern).distinct()
+                            .sorted(Comparator.comparingLong(QuestElement::getQuestionID))
+                            .collect(Collectors.toList());
+    }
+    public QuestElement getPrevQuestElement(Long currentQuestion, List<QuestElement> questElementList){
+        Integer nextIndex;
+        QuestElement nextElement = null;
+        Integer currentIndex = questElementList.size();
 
+        Optional<QuestElement> currentElement = questElementList.stream()
+                                                                .filter(questElement -> questElement.getQuestionID() == currentQuestion)
+                                                                .findFirst();
+        if (currentElement.isPresent()){
+            currentIndex =  questElementList.indexOf(currentElement.get());
+        }
+        if(currentIndex > 0){
+            nextIndex = currentIndex - 1;
+            nextElement = questElementList.get(nextIndex);
+        }
+        return nextElement;
+    }
+    public QuestElement getNextQuestElement(Long currentQuestion, List<QuestElement> questElementList){
+        Integer nextIndex;
+        QuestElement nextElement = null;
+
+        Integer currentIndex = questElementList.size();
+
+        Optional<QuestElement> currentElement = questElementList.stream()
+                                                                .filter(questElement -> questElement.getQuestionID() == currentQuestion)
+                                                                .findFirst();
+        if (currentElement.isPresent()){
+            currentIndex =  questElementList.indexOf(currentElement.get());
+        }
+        if(currentIndex < questElementList.size() - 1){
+            nextIndex = currentIndex + 1;
+            nextElement = questElementList.get(nextIndex);
+        }
+        return nextElement;
+    }
     private void loadSavedQuestData() {
         Path dataPath = WEB_INF.resolve(Route.DATA_PATH + QUESTS_DATA_FILE);
         try (Stream<String> questData = Files.lines(Paths.get(dataPath.toUri()))) {
@@ -77,10 +108,22 @@ public class GeneralService {
                                 .nextQuestionID(Long.parseLong(dataLines[4]))
                                 .build());
             };
-//            logger.info("Load quests data");
+            log.info("Load quests data");
         } catch (IOException e) {
-//            logger.error("Quest data load error");
+            log.error("Quest data load error");
             throw new QuestException(e);
         }
     }
+    public Long getFirstQuestElement (Long questID){
+        Long firstQuestionId = 0L;
+        QuestElement pattern = QuestElement.builder()
+                                .questID(questID)
+                                .position(Keys.ELEMENT_FIRST).build();
+        Optional<QuestElement> questElement = find(pattern).findFirst();
+        if (questElement.isPresent()){
+            firstQuestionId = questElement.get().getQuestionID();
+        }
+        return firstQuestionId;
+    }
+
 }

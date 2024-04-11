@@ -1,19 +1,15 @@
 package com.javarush.khmelov.cmd;
 
 import com.javarush.khmelov.entity.QuestElement;
-import com.javarush.khmelov.entity.Question;
 import com.javarush.khmelov.repository.QuestionRepository;
 import com.javarush.khmelov.service.*;
 import com.javarush.khmelov.tools.Keys;
 import com.javarush.khmelov.tools.Route;
 import com.javarush.khmelov.tools.Tools;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EditQuest implements Command {
     private final QuestService questService;
@@ -39,7 +35,7 @@ public class EditQuest implements Command {
 
         String commandKey;
         String suffix = "";
-        Long parametrId = null;
+        String parametrId = null;
         String commandParametr = null;
 
         Long questID = Long.parseLong(req.getParameter(Keys.PARAMETR_ID));
@@ -50,17 +46,18 @@ public class EditQuest implements Command {
         if (commandKey == Route.SELECT_RESPONSE) {
             commandParametr = Keys.PARAMETR_QUESTION;
             questElementList = generalService.findQuestQuestions(questID);
-            parametrId = questElementList.isEmpty() ? parametrId : questElementList.getFirst().getQuestionID();
+            parametrId = questElementList.isEmpty() ? parametrId : questElementList.getFirst().getQuestionID().toString();
         }
         if (commandKey == Route.SELECT_NEXT_QUESTIONS) {
             commandParametr = Keys.PARAMETR_RESPONSE;
             QuestElement pattern = QuestElement.builder().questID(questID).build();
-            questElementList = generalService.find(pattern).collect(Collectors.toList());
-            parametrId = questElementList.isEmpty() ? parametrId : questElementList.getFirst().getResponseID();
+            questElementList = generalService.sortedFind(pattern, Comparator.comparingLong(QuestElement::getResponseID));
+            QuestElement questElement = questElementList.getFirst();
+            parametrId = questElementList.isEmpty() ? parametrId : "%d&%s=%d".formatted(questElement.getResponseID(),Keys.PARAMETR_QUESTION,questElement.getQuestionID());
         }
 
         if (parametrId!=null && !commandParametr.isEmpty()) {
-            suffix = "&%s=%d".formatted(commandParametr, parametrId);
+            suffix = "&%s=%s".formatted(commandParametr, parametrId);
         }
         return commandKey + "?%s=%d".formatted(Keys.PARAMETR_ID,questID) + suffix;
     }
@@ -75,7 +72,7 @@ public class EditQuest implements Command {
         String commandName = currentCommand;
         Optional<String> cmd = Optional.ofNullable(req.getParameter(Keys.JSP_VAL_DIRECT));
         if (cmd.isPresent()) {
-            commandName = tools.getCommandKeys(cmd.get());
+            commandName = Tools.getCommandKeys(cmd.get());
         }
         return commandName;
     }

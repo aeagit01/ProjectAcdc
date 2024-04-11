@@ -14,6 +14,10 @@
 <body>
 <div class="container" style="height: auto">
     <form method="post" class="block">
+        <h4 class="card-title">Выберите берите ответы, которые будут установлены в качестве ответов на вопросы
+            квеста. </h4>
+        <p class="card-text" style="align: center">(нажимайте далее пока не сопоставить ответы для всех вопросов, при переходе к следующему
+            или предыдущему вопросу текущий выбор сохранится автоматически) </p>
         <div class="col-md-30 text-end">
             <div class="col-md-25 text-end">
                 <c:if test="${!empty question}">
@@ -33,15 +37,17 @@
                         <c:forEach var="response" items="${responsechk}">
                             <div style="width: 100%; border: 1px solid darkgray;" name="response"
                                  class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">
-                                <input class="form-check-input flex-shrink-0" type="checkbox"
-                                       name="responsechk"
-                                       id="questionlist${response.id}" value="${response.id}" checked><br>
-                                <label style="width: 3%"></label>
-                                <label style="width: 80%">${response.description}</label>
-                                <label style="width: 3%"></label>
                                 <img src="/images/resp-${response.images[0]}" alt="twbs" width="90"
                                      height="90"
                                      class="rounded-circle flex-shrink-0 align-items-right justify-content-right">
+                                <label style="width: 3%"></label>
+                                <label style="width: 80%"
+                                       class="d-flex align-items-center">${response.description}</label>
+                                <label style="width: 3%"></label>
+                                <input class="form-check-input flex-shrink-0" type="checkbox"
+                                       name="responsechk"
+                                       id="questionlist${response.id}" value="${response.id}" checked><br>
+
                             </div>
                         </c:forEach>
                     </c:if>
@@ -49,15 +55,17 @@
                         <c:forEach var="response" items="${responses}">
                             <div style="width: 100%; border: 1px solid darkgray;" name="response"
                                  class="d-flex flex-column flex-md-row p-4 hap-4 py-md-15 align-items-center justify-content-left">
-                                <input class="form-check-input flex-shrink-0" type="checkbox"
-                                       name="responsechk"
-                                       id="questionlist${response.id}" value="${response.id}"><br>
-                                <label style="width: 3%"></label>
-                                <label style="width: 80%">${response.description}</label>
-                                <label style="width: 3%"></label>
                                 <img src="/images/resp-${response.images[0]}" alt="twbs" width="90"
                                      height="90"
                                      class="rounded-circle flex-shrink-0 align-items-right justify-content-right">
+                                <label style="width: 3%"></label>
+                                <label style="width: 80%"
+                                       class="d-flex align-items-center">${response.description}</label>
+                                <label style="width: 3%"></label>
+                                <input class="form-check-input flex-shrink-0" type="checkbox"
+                                       name="responsechk"
+                                       id="questionlist${response.id}" value="${response.id}"><br>
+
                             </div>
                         </c:forEach>
                     </c:if>
@@ -71,4 +79,4 @@
     </form>
 </div>
 </body>
-
+<%@include file="include/footer.jsp" %>

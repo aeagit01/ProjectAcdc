@@ -14,10 +14,11 @@ import com.javarush.khmelov.exeption.QuestException;
 import com.javarush.khmelov.repository.QuestRepository;
 import com.javarush.khmelov.entity.Quest;
 import com.javarush.khmelov.tools.Route;
+import lombok.extern.log4j.Log4j2;
 
 import static com.javarush.khmelov.tools.Keys.QUESTS_FILE;
 import static com.javarush.khmelov.tools.Keys.WEB_INF;
-
+@Log4j2
 public class QuestService {
     private final QuestRepository questRepository;
 
@@ -52,9 +53,9 @@ public class QuestService {
                                 .description(dataLines[1])
                                 .build());
             };
-//            logger.info("Load quests data");
+            log.info("Load quests data");
         } catch (IOException e) {
-//            logger.error("Quest data load error");
+            log.error("Quest data load error");
             throw new QuestException(e);
         }
     }

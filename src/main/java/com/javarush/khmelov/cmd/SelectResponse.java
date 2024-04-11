@@ -62,6 +62,7 @@ public class SelectResponse implements Command {
     }
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res) {
+        String suffix = Keys.EMPTYSTR;
         QuestElement nextQuestElement = null;
         String nextPage = getPage();
         String questId = req.getParameter(Keys.PARAMETR_ID);
@@ -69,21 +70,23 @@ public class SelectResponse implements Command {
         String direction = req.getParameter(Keys.JSP_VAL_DIRECT);
 
         if (direction.equals(Keys.COMMAND_NEXT)) {
-            nextQuestElement = generalService.getNextQuestElement(Long.parseLong(questionId), Long.parseLong(questId));
-            questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
-//            nextPage = nextQuestElement == null ? Route.EDIT_QUEST : nextPage;
+            nextQuestElement = generalService.getNextQuestElement(Long.parseLong(questionId),
+                                                                  generalService.findQuestQuestions(Long.parseLong(questId)));
         }
         if (direction.equals(Keys.COMMAND_PREV)) {
-            nextQuestElement = generalService.getPrevQuestElement(Long.parseLong(questionId), Long.parseLong(questId));
-            questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
+            nextQuestElement = generalService.getPrevQuestElement(Long.parseLong(questionId),
+                                                                    generalService.findQuestQuestions(Long.parseLong(questId)));
         }
         updateResponsesElenments(req);
 
-        String suffix = "&%s=%s".formatted(Keys.PARAMETR_QUESTION, questionId);
+
 
         if (nextQuestElement == null) {
             nextPage = Route.EDIT_QUEST;
             suffix = "";
+        }else {
+            questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
+            suffix = "&%s=%s".formatted(Keys.PARAMETR_QUESTION, questionId);
         }
 
         return nextPage + "?%s=%s".formatted(Keys.PARAMETR_ID, questId) + suffix;

@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
+
+import static com.javarush.khmelov.tools.Keys.NOIMAGE;
+import static com.javarush.khmelov.tools.Keys.QUESTION;
 
 @Data
 @Builder
@@ -17,6 +21,13 @@ public class Question implements QuestObject, Cloneable{
     private String description;
     private final Collection<Long> images = new ArrayList<>();
 
+    public String getImage(){
+        String returnImageString = NOIMAGE;
+        if (!images.isEmpty()){
+            returnImageString = QUESTION+ images.stream().findFirst() + ".png"; //todo
+        }
+        return returnImageString;
+    }
     @Override
     public Object clone() throws CloneNotSupportedException {
 

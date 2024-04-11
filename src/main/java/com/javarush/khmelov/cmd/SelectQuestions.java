@@ -42,15 +42,15 @@ public class SelectQuestions implements Command {
             Question foundQuestion = questionService.get(questElement.getQuestionID());
             allQuestions.remove(foundQuestion);
             chkquest.add(foundQuestion);
-            if (questElement.getPosition()!=null && questElement.getPosition()==1L){
+            if (questElement.getPosition()!=null && questElement.getPosition()==Keys.ELEMENT_FIRST){
                 firstchk = foundQuestion;
                 chkquest.remove(foundQuestion);
             }
         }
         req.setAttribute(Keys.JSP_VAL_FIRSTELEMENT, firstchk);
-        req.setAttribute("chkquestions", chkquest);
-        req.setAttribute("questions", allQuestions.toArray());
-        req.setAttribute("quest", selectedQuest);
+        req.setAttribute(Keys.JSP_VAL_CHECKEDQUESTION, chkquest);
+        req.setAttribute(Keys.JSP_VAL_QUESTION, allQuestions.toArray());
+        req.setAttribute(Keys.JSP_VAL_QUEST, selectedQuest);
 
         return getJspPage(); //getPage()+"?q="+questId;//
     }

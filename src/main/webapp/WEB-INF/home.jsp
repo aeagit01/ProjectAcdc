@@ -15,7 +15,7 @@
                 <div class="col-md-4">
                     <input id="userLogin" name="login" type="text" placeholder="set login" class="form-control input-md"
                            required=""
-                           value="Carl">
+                           value="">
                 </div>
             </div>
             <!-- Password input-->
@@ -24,10 +24,10 @@
                 <div class="col-md-4">
                     <input id="userPassword" name="password" type="password" placeholder="pass req"
                            class="form-control input-md" required=""
-                           value="admin">
-
+                           value="">
                 </div>
             </div>
+            <label style="height: 10px"></label>
             <!-- Button -->
             <div class=" form-group">
                 <label class="col-md-4 control-label" for="submit"></label>
@@ -37,13 +37,8 @@
                     </button>
                 </div>
             </div>
-
         </fieldset>
     </form>
-
-    <%--    <a href="list-score">Рекорды</a>--%>
-    <a href="select-quest">Начать квест</a>
-    <%--    <a href="list-user">Пользователи</a>--%>
 </div>
 </body>
 <%@include file="include/footer.jsp" %>

@@ -16,9 +16,10 @@ import java.util.stream.Stream;
 
 import com.javarush.khmelov.repository.FinishMessageRepository;
 import com.javarush.khmelov.tools.Route;
+import lombok.extern.log4j.Log4j2;
 
 import static com.javarush.khmelov.tools.Keys.*;
-
+@Log4j2
 public class FinishMessageService {
     private final FinishMessageRepository finishMessageRepository;
 
@@ -57,9 +58,9 @@ public class FinishMessageService {
                                 .build());
             };
 
-//            log.info("Load question data");
+            log.info("Load question data");
         } catch (IOException e){
-//            log.error("Question data load error");
+            log.error("Question data load error");
             throw new QuestException(e);
         }
     }

@@ -11,15 +11,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.javarush.khmelov.tools.Keys.*;
-//@Log4j2
+@Log4j2
 public class QuestResponsesService {
     private final QuestResponsesRepository questResponsesRepository;
-
     public QuestResponsesService(QuestResponsesRepository questResponsesRepository) {
         this.questResponsesRepository = questResponsesRepository;
         loadSavedResponses();
@@ -56,9 +57,9 @@ public class QuestResponsesService {
                                 .description(dataLines[1])
                                 .build());
             };
-//            log.info("Load responses data");
+            log.info("Load responses data");
         } catch (IOException e) {
-//            log.error("Responses data load error");
+            log.error("Responses data load error");
             throw new QuestException(e);
         }
     }
