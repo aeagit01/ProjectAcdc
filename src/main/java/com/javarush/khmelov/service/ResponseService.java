@@ -39,13 +39,13 @@ public class ResponseService {
     public ArrayList<QuestResponse> getObjectResponses (QuestObject questObject){
         ArrayList<QuestResponse> responseList = new ArrayList<>();
 
-        if (questObject.getRelatedObjectIDs().length != 0) {
-            long[] responsesIds = questObject.getRelatedObjectIDs();
-            for (long id : responsesIds) {
-                Optional<QuestResponse> responseObject = responsesRepository.get(id);
-                responseList.add(responseObject.get());
-            }
-        }
+//        if (questObject.getRelatedObjectIDs().length != 0) {
+//            long[] responsesIds = questObject.getRelatedObjectIDs();
+//            for (long id : responsesIds) {
+//                Optional<QuestResponse> responseObject = responsesRepository.get(id);
+//                responseList.add(responseObject.get());
+//            }
+//        }
         return responseList;
     }
 

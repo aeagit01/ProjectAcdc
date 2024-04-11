@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class ImageRepository implements Repository{
     private int imageID;
@@ -22,6 +23,11 @@ public class ImageRepository implements Repository{
     @Override
     public Collection<String> getAll() {
         return map.values();
+    }
+
+    @Override
+    public Stream find(Object pattern) {
+        return null;
     }
 
     @Override
