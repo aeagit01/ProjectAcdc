@@ -2,8 +2,10 @@
 <%@include file="include/head.jsp"%>
 <body>
 <c:forEach var="user" items="${requestScope.users}">
+<p>
     <a href="edit-user?id=${user.id}">${user.login}</a>
+</p>
 </c:forEach>
 
 </body>
-
+<%@include file="footer.jsp"%>
