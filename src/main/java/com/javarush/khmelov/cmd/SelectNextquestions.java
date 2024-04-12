@@ -50,8 +50,8 @@ public class SelectNextquestions implements Command {
 
         req.setAttribute(Keys.RESPONSE, selectedResponse);
         Collection<com.javarush.khmelov.entity.Question> questionlist = questionService.getAll();
-        Collection<Question> tmpList = questionlist;
-        if(chkq!=null){
+        Collection<Question> tmpList = new ArrayList<>(questionlist);
+        if (chkq != null) {
             tmpList.remove(chkq);
         }
 
@@ -59,8 +59,8 @@ public class SelectNextquestions implements Command {
         FinishMessage chkfin = getCheckedFinishMessage(questId, questionId, responseId);
         req.setAttribute("chkfin", chkfin);
         Collection<FinishMessage> finmessagelist = finishMessageService.getAll();
-        Collection<FinishMessage> tmpFinMessageList = finmessagelist;
-        if(chkfin!=null){
+        Collection<FinishMessage> tmpFinMessageList = new ArrayList<>(finmessagelist);
+        if (chkfin != null) {
             tmpFinMessageList.remove(chkfin);
         }
 
@@ -84,7 +84,9 @@ public class SelectNextquestions implements Command {
         List<QuestElement> questElementList = generalService.sortedFind(pattern, Comparator.comparingLong(QuestElement::getResponseID));
 
         if (direction.equals(Keys.COMMAND_NEXT)) {
-            nextQuestElement = generalService.getNextQuestElement(Long.parseLong(questionId), questElementList);
+            nextQuestElement = generalService.getNextQuestElement(QuestElement.builder()
+                    .questID(Long.parseLong(questId))
+                    .questionID(Long.parseLong(questionId)).responseID(Long.parseLong(responseId)).build(), questElementList);
         }
 
         if (direction.equals(Keys.COMMAND_PREV)) {
@@ -102,6 +104,7 @@ public class SelectNextquestions implements Command {
 
         return commandKey + "?%s=%s".formatted(Keys.PARAMETR_ID, questId) + parametrId;
     }
+
     private void updateQuestElenments(HttpServletRequest req) {
 
         String nextQuestObject = null;
@@ -126,18 +129,39 @@ public class SelectNextquestions implements Command {
             position = Keys.ELEMENT_LAST;
         }
 
-        if (nextQuestObject!=null) {
 
-            generalService.create(QuestElement.builder()
-                    .questID(Long.parseLong(questId))
-                    .questionID(Long.parseLong(questionId))
-                    .responseID(Long.parseLong(responseId))
-                    .position(position)
-                    .nextQuestionID(Long.parseLong(nextQuestObject)).build());
+        if (nextQuestObject != null) {
+            updateQuestElement(Long.parseLong(questId),
+                    Long.parseLong(questionId),
+                    Long.parseLong(responseId),
+                    position,
+                    Long.parseLong(nextQuestObject));
         }
     }
 
-    private Question getCheckedQuestion(Long questId, Long questionID, Long responseId){
+    private void updateQuestElement(Long questId, Long questionID,
+                                    Long responseId, Long position, Long nextQuestion) {
+        QuestElement pattern = QuestElement.builder()
+                .questID(questId)
+                .questionID(questionID)
+                .responseID(responseId).build();
+        Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
+        if (questElement.isPresent()) {
+            QuestElement newQuestElement = questElement.get();
+            newQuestElement.setPosition(position);
+            newQuestElement.setNextQuestionID(nextQuestion);
+            generalService.update(newQuestElement);
+        } else {
+            generalService.create(QuestElement.builder()
+                    .questID(questId)
+                    .questionID(questionID)
+                    .responseID(responseId)
+                    .position(position)
+                    .nextQuestionID(nextQuestion).build());
+        }
+    }
+
+    private Question getCheckedQuestion(Long questId, Long questionID, Long responseId) {
         Question question = null;
         QuestElement pattern = QuestElement.builder()
                 .questID(questId)
@@ -145,13 +169,13 @@ public class SelectNextquestions implements Command {
                 .responseID(responseId).build();
 
         Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
-        if(questElement.isPresent()){
+        if (questElement.isPresent()) {
             question = questionService.get(questElement.get().getNextQuestionID());
         }
-        return  question;
+        return question;
     }
 
-    private FinishMessage getCheckedFinishMessage(Long questId, Long questionID, Long responseId){
+    private FinishMessage getCheckedFinishMessage(Long questId, Long questionID, Long responseId) {
         FinishMessage finishMessage = null;
         QuestElement pattern = QuestElement.builder()
                 .questID(questId)
@@ -159,9 +183,9 @@ public class SelectNextquestions implements Command {
                 .responseID(responseId).build();
 
         Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
-        if(questElement.isPresent()){
+        if (questElement.isPresent()) {
             finishMessage = finishMessageService.get(questElement.get().getNextQuestionID());
         }
-        return  finishMessage;
+        return finishMessage;
     }
 }

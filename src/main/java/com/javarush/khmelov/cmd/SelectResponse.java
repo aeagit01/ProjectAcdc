@@ -67,8 +67,8 @@ public class SelectResponse implements Command {
         String direction = req.getParameter(Keys.JSP_VAL_DIRECT);
 
         if (direction.equals(Keys.COMMAND_NEXT)) {
-            nextQuestElement = generalService.getNextQuestElement(Long.parseLong(questionId),
-                                                                  generalService.findQuestQuestions(Long.parseLong(questId)));
+            nextQuestElement = generalService.getNextQuestElement(QuestElement.builder().questionID(Long.parseLong(questionId)).build(),
+                    generalService.findQuestQuestions(Long.parseLong(questId)));
         }
         if (direction.equals(Keys.COMMAND_PREV)) {
             nextQuestElement = generalService.getPrevQuestElement(Long.parseLong(questionId),

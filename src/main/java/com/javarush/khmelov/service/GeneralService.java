@@ -2,6 +2,7 @@ package com.javarush.khmelov.service;
 
 import com.javarush.khmelov.entity.QuestElement;
 
+import com.javarush.khmelov.entity.QuestObject;
 import com.javarush.khmelov.exeption.QuestException;
 import com.javarush.khmelov.repository.GeneralRepository;
 import com.javarush.khmelov.tools.Keys;
@@ -67,7 +68,7 @@ public class GeneralService {
                                                                 .filter(questElement -> questElement.getQuestionID() == currentQuestion)
                                                                 .findFirst();
         if (currentElement.isPresent()){
-            currentIndex =  questElementList.indexOf(currentElement.get());
+            currentIndex =  getArrayIndex(currentElement.get(), questElementList);
         }
         if(currentIndex > 0){
             nextIndex = currentIndex - 1;
@@ -75,17 +76,19 @@ public class GeneralService {
         }
         return nextElement;
     }
-    public QuestElement getNextQuestElement(Long currentQuestion, List<QuestElement> questElementList){
+    public QuestElement getNextQuestElement(QuestElement pattern, List<QuestElement> questElementList){
         Integer nextIndex;
         QuestElement nextElement = null;
 
         Integer currentIndex = questElementList.size();
 
-        Optional<QuestElement> currentElement = questElementList.stream()
-                                                                .filter(questElement -> questElement.getQuestionID() == currentQuestion)
-                                                                .findFirst();
+        Optional<QuestElement> currentElement = find(pattern).findFirst();
+
+//                questElementList.stream()
+//                                                                .filter(questElement -> questElement.getQuestionID() == currentQuestion)
+//                                                                .findFirst();
         if (currentElement.isPresent()){
-            currentIndex =  questElementList.indexOf(currentElement.get());
+            currentIndex =  getArrayIndex(currentElement.get(), questElementList);
         }
         if(currentIndex < questElementList.size() - 1){
             nextIndex = currentIndex + 1;
@@ -118,12 +121,22 @@ public class GeneralService {
         Long firstQuestionId = 0L;
         QuestElement pattern = QuestElement.builder()
                                 .questID(questID)
-                                .position(Keys.ELEMENT_FIRST).build();
+                                .position(ELEMENT_FIRST).build();
         Optional<QuestElement> questElement = find(pattern).findFirst();
         if (questElement.isPresent()){
             firstQuestionId = questElement.get().getQuestionID();
         }
         return firstQuestionId;
     }
-
+    private int getArrayIndex(QuestElement questObject, List<QuestElement> list){
+        int retindex=-1;
+        for (int i=0;i<list.size();i++){
+            if (questObject.getId()==list.get(i).getId()){
+                retindex = i;
+                break;
+            }
+        }
+        return retindex;
+    }
 }
+

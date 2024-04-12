@@ -47,7 +47,7 @@ class GeneralServiceTest {
     @Test
     void checkReturnNextQuestElementFromGeneralRepository() {
         Long currentQuestionId = 9L;
-        QuestElement nextQueslElement = mokGeneralService.getNextQuestElement(currentQuestionId, sortedList);
+        QuestElement nextQueslElement = mokGeneralService.getNextQuestElement(QuestElement.builder().questionID(currentQuestionId).build(), sortedList);
 
         Integer currentIndex = sortedList.indexOf(sortedList.stream()
                 .filter(qe->qe.getQuestionID().equals(currentQuestionId))
