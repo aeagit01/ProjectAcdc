@@ -1,6 +1,7 @@
 package com.javarush.khmelov.config;
 
 import com.javarush.khmelov.cmd.Command;
+import com.javarush.khmelov.tools.Keys;
 import lombok.SneakyThrows;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class HttpResolver {
     public Command resolve(String name) {
         if (commandMap.get(name) == null) {
             String simpleName = convertSnakeStyleToCamelCase(name);
-            String className = "com.javarush.khmelov.cmd." + simpleName;
+            String className = Keys.CLASSPATH + simpleName;
             var aClass = Class.forName(className);
             Command command = (Command) NanoSpring.find(aClass);
             commandMap.put(name, command);

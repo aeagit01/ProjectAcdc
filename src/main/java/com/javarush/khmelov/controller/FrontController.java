@@ -34,8 +34,6 @@ public class FrontController extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         httpResolver = NanoSpring.find(HttpResolver.class);
-//        NanoSpring.find(Config.class).fillStartData();
-//        config.getServletContext().setAttribute("roles", Role.values());
     }
 
     @Override
@@ -43,10 +41,10 @@ public class FrontController extends HttpServlet {
         String uriCommand = RequestHelper.getCommand(req, resp);
         String cmdName = fixRootCase(uriCommand);
         Command command = httpResolver.resolve(cmdName);
-        if (req.getMethod().equalsIgnoreCase("get")) {
+        if (req.getMethod().equalsIgnoreCase(Keys.GET)) {
             String view = command.doGet(req, resp);
             req.getRequestDispatcher(view).forward(req, resp);
-        } else if (req.getMethod().equalsIgnoreCase("post")) {
+        } else if (req.getMethod().equalsIgnoreCase(Keys.POST)) {
             String redirect = command.doPost(req, resp);
             redirect = fixAbsoluteAddressing(redirect);
             resp.sendRedirect(redirect);
@@ -57,7 +55,7 @@ public class FrontController extends HttpServlet {
 
     private static String fixRootCase(String uriCommand) {
         return uriCommand.equals("/")
-                ? "home"
+                ? Keys.HOME
                 : uriCommand.substring(1);
     }
 
