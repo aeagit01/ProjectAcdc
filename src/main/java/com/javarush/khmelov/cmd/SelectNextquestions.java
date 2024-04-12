@@ -21,7 +21,6 @@ public class SelectNextquestions implements Command {
     GeneralService generalService;
     QuestResponsesService questResponsesService;
     FinishMessageService finishMessageService;
-    Integer step = 0;
     QuestResponse selectedResponse;
 
     public SelectNextquestions(QuestionService questionService, QuestService questService, GeneralService generalService,
@@ -45,7 +44,7 @@ public class SelectNextquestions implements Command {
         req.setAttribute(Keys.QUESTION, selectedQuestion);
 
         Question chkq = getCheckedQuestion(questId, questionId, responseId);
-        req.setAttribute("chkq", chkq);
+        req.setAttribute(Keys.JSP_VAL_CHKQ, chkq);
         selectedResponse = questResponsesService.get(responseId);
 
         req.setAttribute(Keys.RESPONSE, selectedResponse);
@@ -57,16 +56,16 @@ public class SelectNextquestions implements Command {
 
         req.setAttribute(Keys.JSP_VAL_QUESTION, tmpList.toArray());
         FinishMessage chkfin = getCheckedFinishMessage(questId, questionId, responseId);
-        req.setAttribute("chkfin", chkfin);
+        req.setAttribute(Keys.JSP_VAL_CHECKEDFM, chkfin);
         Collection<FinishMessage> finmessagelist = finishMessageService.getAll();
         Collection<FinishMessage> tmpFinMessageList = new ArrayList<>(finmessagelist);
         if (chkfin != null) {
             tmpFinMessageList.remove(chkfin);
         }
 
-        req.setAttribute("finmessages", tmpFinMessageList.toArray());
+        req.setAttribute(Keys.JSP_VAL_FINMESSAGES, tmpFinMessageList.toArray());
 
-        return getJspPage(); //getPage()+"?q="+questId;//
+        return getJspPage();
     }
 
 

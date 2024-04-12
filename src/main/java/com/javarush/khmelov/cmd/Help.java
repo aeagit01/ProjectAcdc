@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.javarush.khmelov.tools.Keys.WEB_INF;
+
 @Log4j2
 public class Help implements Command {
 
@@ -32,6 +33,7 @@ public class Help implements Command {
         }
         return getJspPage();
     }
+
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 

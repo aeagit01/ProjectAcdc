@@ -20,8 +20,6 @@ public class SelectQuestions implements Command {
     QuestionService questionService;
     QuestService questService;
     GeneralService generalService;
-    Integer step = 0;
-
     Quest selectedQuest;
 
     public SelectQuestions(QuestionService questionService, QuestService questService, GeneralService generalService) {
@@ -29,6 +27,7 @@ public class SelectQuestions implements Command {
         this.questService = questService;
         this.generalService = generalService;
     }
+
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse res) {
         Long questId = Long.parseLong(req.getParameter(Keys.PARAMETR_ID)); //"id"
@@ -42,7 +41,7 @@ public class SelectQuestions implements Command {
             Question foundQuestion = questionService.get(questElement.getQuestionID());
             allQuestions.remove(foundQuestion);
             chkquest.add(foundQuestion);
-            if (questElement.getPosition()!=null && questElement.getPosition()==Keys.ELEMENT_FIRST){
+            if (questElement.getPosition() != null && questElement.getPosition() == Keys.ELEMENT_FIRST) {
                 firstchk = foundQuestion;
                 chkquest.remove(foundQuestion);
             }
@@ -52,10 +51,11 @@ public class SelectQuestions implements Command {
         req.setAttribute(Keys.JSP_VAL_QUESTION, allQuestions.toArray());
         req.setAttribute(Keys.JSP_VAL_QUEST, selectedQuest);
 
-        return getJspPage(); //getPage()+"?q="+questId;//
+        return getJspPage();
     }
+
     @Override
-    public String doPost(HttpServletRequest req, HttpServletResponse res){
+    public String doPost(HttpServletRequest req, HttpServletResponse res) {
         Long questId = Long.parseLong(req.getParameter(Keys.PARAMETR_ID));
         String commandName;
 
@@ -66,8 +66,9 @@ public class SelectQuestions implements Command {
         } else {
             commandName = req.getParameter(Keys.COMMAND_EDIT);
         }
-        return commandName + "?%s=%s".formatted(Keys.PARAMETR_ID,questId);
+        return commandName + "?%s=%s".formatted(Keys.PARAMETR_ID, questId);
     }
+
     private void updateQuestElements(HttpServletRequest req) {
         Long questId = Long.parseLong(req.getParameter(Keys.PARAMETR_ID));
         QuestElement pattern = QuestElement.builder().questID(questId).build();
@@ -93,6 +94,7 @@ public class SelectQuestions implements Command {
             updateFirstElement(req);
         }
     }
+
     private String getCommandName(HttpServletRequest req, String currentCommand) {
         Tools tools = new Tools();
         String commandName = currentCommand;
@@ -102,6 +104,7 @@ public class SelectQuestions implements Command {
         }
         return commandName;
     }
+
     private void updateFirstElement(HttpServletRequest req) {
         String firstElementString = req.getParameter(Keys.JSP_VAL_FIRSTELEMENT);
         String questIdString = req.getParameter(Keys.PARAMETR_ID);
@@ -111,9 +114,9 @@ public class SelectQuestions implements Command {
             Long questIdLong = Long.parseLong(questIdString);
             QuestElement pattern = QuestElement.builder().questID(questIdLong).position(1L).build();
             ArrayList<QuestElement> firstElementList = (ArrayList<QuestElement>) generalService.find(pattern).collect(Collectors.toList());
-            for (QuestElement firstElenemt: firstElementList){
+            for (QuestElement firstElenemt : firstElementList) {
                 Long cheked = firstElenemt.getQuestionID();
-                if (firstElementLong != cheked){
+                if (firstElementLong != cheked) {
                     firstElenemt.setPosition(Keys.ELEMENT_ORDINARY);
                     generalService.update(firstElenemt);
                 }

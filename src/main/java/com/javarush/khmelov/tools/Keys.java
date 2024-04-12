@@ -50,6 +50,7 @@ public class Keys {
     public static final String ROLE = "role";
     public static final String USER = "user";
     public static final String USERS = "users";
+    public static final String QUESTS = "quests";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
 
@@ -84,6 +85,9 @@ public class Keys {
     public static final String JSP_VAL_QUESTIMAGE = "buttonname";
     public static final String JSP_VAL_RESPONSEIMAGE = "responseimage";
     public static final String JSP_VAL_QUESTIONIMAGE = "questionimage";
+    public static final String JSP_VAL_CHECKEDFM = "chkfin";
+    public static final String JSP_VAL_CHKQ = "chkq";
+    public static final String JSP_VAL_FINMESSAGES = "finmessages";
 
     public static final String NOIMAGE = "noimage.png";
 

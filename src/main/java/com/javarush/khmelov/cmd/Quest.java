@@ -86,21 +86,21 @@ public class Quest implements Command {
 
         if (selection != null) {
             QuestElement pattern = QuestElement.builder()
-                                                .questID(Long.parseLong(stringId))
-                                                .questionID(Long.parseLong(questionId))
-                                                .responseID(Long.parseLong(selection)).build();
+                    .questID(Long.parseLong(stringId))
+                    .questionID(Long.parseLong(questionId))
+                    .responseID(Long.parseLong(selection)).build();
             Optional<QuestElement> questElement = generalService.find(pattern).findFirst();
             if (questElement.isPresent()) {
                 nextParametr = getNextObjectParametr(questElement.get());
                 nextQuestion = questElement.get().getNextQuestionID();
                 suffix = "&%s=%d".formatted(nextParametr, nextQuestion);
             }
-        }else{
+        } else {
             commandKey = Keys.COMMAND_SELECTQUEST;
         }
 
         String questID = req.getParameter(Keys.PARAMETR_ID);
-        return  commandKey + "?%s=%s".formatted(Keys.PARAMETR_ID,questID) + suffix;
+        return commandKey + "?%s=%s".formatted(Keys.PARAMETR_ID, questID) + suffix;
     }
 
     private String getNextObjectParametr(QuestElement questElement) {

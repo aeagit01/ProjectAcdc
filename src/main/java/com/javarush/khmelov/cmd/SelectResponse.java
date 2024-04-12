@@ -32,6 +32,7 @@ public class SelectResponse implements Command {
         this.finishMessageService = finishMessageService;
 
     }
+
     @Override
     public String doGet(HttpServletRequest req, HttpServletResponse res) {
 
@@ -57,6 +58,7 @@ public class SelectResponse implements Command {
 
         return getJspPage();
     }
+
     @Override
     public String doPost(HttpServletRequest req, HttpServletResponse res) {
         String suffix = Keys.EMPTYSTR;
@@ -72,22 +74,22 @@ public class SelectResponse implements Command {
         }
         if (direction.equals(Keys.COMMAND_PREV)) {
             nextQuestElement = generalService.getPrevQuestElement(Long.parseLong(questionId),
-                                                                    generalService.findQuestQuestions(Long.parseLong(questId)));
+                    generalService.findQuestQuestions(Long.parseLong(questId)));
         }
         updateResponsesElenments(req);
-
 
 
         if (nextQuestElement == null) {
             nextPage = Route.EDIT_QUEST;
             suffix = "";
-        }else {
+        } else {
             questionId = nextQuestElement != null ? nextQuestElement.getQuestionID().toString() : questionId;
             suffix = "&%s=%s".formatted(Keys.PARAMETR_QUESTION, questionId);
         }
 
         return nextPage + "?%s=%s".formatted(Keys.PARAMETR_ID, questId) + suffix;
     }
+
     private void updateResponsesElenments(HttpServletRequest req) {
 
         String questId = req.getParameter(Keys.PARAMETR_ID);
