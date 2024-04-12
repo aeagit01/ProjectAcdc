@@ -19,6 +19,7 @@ import com.javarush.khmelov.tools.Route;
 import lombok.extern.log4j.Log4j2;
 
 import static com.javarush.khmelov.tools.Keys.*;
+
 @Log4j2
 public class FinishMessageService {
     private final FinishMessageRepository finishMessageRepository;
@@ -47,8 +48,9 @@ public class FinishMessageService {
     public FinishMessage get(long id) {
         return (FinishMessage) finishMessageRepository.get(id);
     }
-    private void loadSavedData(){
-        Path dataPath = WEB_INF.resolve(Route.DATA_PATH+FINISH_FILE);
+
+    private void loadSavedData() {
+        Path dataPath = WEB_INF.resolve(Route.DATA_PATH + FINISH_FILE);
         try (Stream<String> questData = Files.lines(Paths.get(dataPath.toUri()))) {
             List<String> list = questData.toList();
             for (String questElement : list) {
@@ -56,10 +58,10 @@ public class FinishMessageService {
                         FinishMessage.builder()
                                 .description(questElement)
                                 .build());
-            };
+            }
 
             log.info("Load question data");
-        } catch (IOException e){
+        } catch (IOException e) {
             log.error("Question data load error");
             throw new QuestException(e);
         }

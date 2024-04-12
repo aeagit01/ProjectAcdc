@@ -23,24 +23,29 @@ public class QuestionService {
         this.questionRepository = questionRepository;
         loadSavedQuestion();
     }
+
     public void create(Question question) {
         questionRepository.create(question);
     }
+
     public void update(Question question) {
         questionRepository.update(question);
     }
+
     public void delete(Question question) {
         questionRepository.delete(question);
     }
+
     public Collection<Question> getAll() {
         return questionRepository.getAll();
     }
+
     public Question get(long id) {
         return (Question) questionRepository.get(id);
     }
 
-    private void loadSavedQuestion(){
-        Path dataPath = WEB_INF.resolve(Route.DATA_PATH+QUESTIONS_FILE);
+    private void loadSavedQuestion() {
+        Path dataPath = WEB_INF.resolve(Route.DATA_PATH + QUESTIONS_FILE);
         try (Stream<String> questData = Files.lines(Paths.get(dataPath.toUri()))) {
             List<String> list = questData.toList();
             for (String questElement : list) {
@@ -51,7 +56,7 @@ public class QuestionService {
                                 .build());
             }
             log.info("Load question data");
-        } catch (IOException e){
+        } catch (IOException e) {
             log.error("Question data load error");
             throw new QuestException(e);
         }

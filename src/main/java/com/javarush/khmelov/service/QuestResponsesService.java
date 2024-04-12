@@ -18,9 +18,11 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.javarush.khmelov.tools.Keys.*;
+
 @Log4j2
 public class QuestResponsesService {
     private final QuestResponsesRepository questResponsesRepository;
+
     public QuestResponsesService(QuestResponsesRepository questResponsesRepository) {
         this.questResponsesRepository = questResponsesRepository;
         loadSavedResponses();
@@ -56,7 +58,8 @@ public class QuestResponsesService {
                         QuestResponse.builder()
                                 .description(dataLines[1])
                                 .build());
-            };
+            }
+            ;
             log.info("Load responses data");
         } catch (IOException e) {
             log.error("Responses data load error");
