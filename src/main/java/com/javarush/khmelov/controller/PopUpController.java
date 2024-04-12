@@ -12,12 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.javarush.khmelov.config.HttpResolver;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet({Route.SELECT_RESPONSE, Route.SELECT_NEXT_QUESTIONS})
+@WebServlet() //{Route.SELECT_RESPONSE, Route.SELECT_NEXT_QUESTIONS}
 public class PopUpController extends HttpServlet {
 
 
